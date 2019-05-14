@@ -9,18 +9,28 @@ const Home = Loadable({
 });
 
 const Groups = Loadable({
-  loader: () => import("../components/groups"),
+  loader: () => import("./groups"),
+  loading: () => <div>Loading...</div>
+});
+
+const Sections = Loadable({
+  loader: () => import("./sections"),
+  loading: () => <div>Loading...</div>
+});
+
+const Events = Loadable({
+  loader: () => import("./events"),
   loading: () => <div>Loading...</div>
 });
 
 const Routes = () => (
-  <div>
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/groups" component={Groups} />
+      <Route exact path="/sections" component={Sections} />
+      <Route exact path="/events" component={Events} />
       <Route component={NotFound} />
     </Switch>
-  </div>
 );
 
 export default Routes;
