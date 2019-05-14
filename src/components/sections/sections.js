@@ -29,6 +29,10 @@ class SectionsComponent extends Component {
   }
   async handleSelectedSection(event, data) {
     const { section } = data;
+    if (!section) {
+      this.setState({ selectedSection: section, newSection: false });
+      return;
+    }
     this.setState({ selectedSection: section, newSection: false, loadingSectionMembers: true });
     await this.getMembers(section);
     this.setState({ loadingSectionMembers: false });
