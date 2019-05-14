@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Icon, List, Header, Button, Segment, Confirm } from 'semantic-ui-react'
 
 import SectionForm from './sectionForm';
+import MembersView from './membersView';
 
 class SectionView extends Component {
   constructor(props) {
@@ -11,14 +12,16 @@ class SectionView extends Component {
     this.state = {
       editMode: false,
       confirmDelete: false,
-    }
+    };
     this.changeEditMode = this.changeEditMode.bind(this);
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
     this.openConfirmDelete = this.openConfirmDelete.bind(this);
   }
   changeEditMode() {
-    this.setState({editMode: !this.state.editMode}); //TODO: cambiar estado es asíncrono, está bien?
+    this.setState((state, props) => {
+      return {editMode: !state.editMode};
+    });
   }
   openConfirmDelete() {
     this.setState({ confirmDelete: true });
@@ -29,6 +32,7 @@ class SectionView extends Component {
   handleConfirmDelete() {
     this.props.deleteSection(this.props.section.id);
   }
+  
   render() {
     const { section, sectionTypes } = this.props;
     const editMode = this.state.editMode;
@@ -49,15 +53,6 @@ class SectionView extends Component {
           <Icon name='edit'/>
           Editar Información
         </Button>
-      </Fragment>
-    );
-
-    const membersInfo = (
-      <Fragment>
-        <Header as='h3'>
-          Miembros:
-        </Header>
-        <List items={['Juan', 'Pedro', 'Carla']} />
       </Fragment>
     );
 
@@ -85,9 +80,11 @@ class SectionView extends Component {
               sectionTypes={this.props.sectionTypes}
             />}
           </Segment>
-          <Segment>
-            {membersInfo}
-          </Segment>
+          <MembersView
+            section={this.props.section}
+            members={this.props.members}
+            loadingMembers={this.props.loadingMembers}
+          />
           <Segment>
             <Button basic color='red' onClick={this.openConfirmDelete}>
               Eliminar unidad
@@ -106,6 +103,8 @@ SectionView.propTypes = {
   sectionTypes: PropTypes.array.isRequired,
   saveChanges: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
+  members: PropTypes.array.isRequired,
+  loadingMembers: PropTypes.bool.isRequired,
 };
 
 export default SectionView;

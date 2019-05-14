@@ -13,21 +13,38 @@ class SectionsComponent extends Component {
     this.state = {
       selectedSection: null,
       newSection: false,
+      selectedSectionMembers: [],
+      loadingSectionMembers: false
     };
     this.handleSelectedSection = this.handleSelectedSection.bind(this);
     this.newSection = this.newSection.bind(this);
     this.cancelCreateSection = this.cancelCreateSection.bind(this);
   }
-  handleSelectedSection(event, data) {
+  async getMembers(section) {
+    const response = await fetch(`/groups/1/sections/${section.id}/users`);
+    if (response.ok) {
+      const resJson = await response.json();
+      this.setState({ selectedSectionMembers: resJson.users });
+    }
+  }
+  async handleSelectedSection(event, data) {
     const { section } = data;
-    this.setState({ selectedSection: section, newSection: false });
+    this.setState({ selectedSection: section, newSection: false, loadingSectionMembers: true });
+    await this.getMembers(section);
+    this.setState({ loadingSectionMembers: false });
   }
   newSection() {
-    this.setState({ newSection: true, selectedSection: null });
+    this.setState({ 
+      newSection: true, 
+      selectedSection: null, 
+      selectedSectionMembers: [], 
+      loadingSectionMembers: false 
+    });
   }
   cancelCreateSection() {
     this.setState( {newSection: false });
   }
+  
   render() {
     if(!this.props.sections.length === 0) {return <div>Loading...</div>}
     return(
@@ -80,6 +97,8 @@ class SectionsComponent extends Component {
               saveChanges={this.props.saveChanges}
               sectionTypes={this.props.sectionTypes}
               deleteSection={this.props.deleteSection}
+              members={this.state.selectedSectionMembers}
+              loadingMembers={this.state.loadingSectionMembers}
             />
             }
             {this.state.newSection
