@@ -19,6 +19,10 @@ class SectionForm extends Component {
   }
 
   saveChanges() {
+    if( !this.state.name || !this.state.type ) {
+      alert('No puedes dejar campos vacíos');
+      return;
+    }
     this.props.saveChanges(this.state.name, this.state.type, this.props.section.id);
   }
   handleNameChange(event, data) {

@@ -20,7 +20,7 @@ class SectionsComponent extends Component {
   }
   handleSelectedSection(event, data) {
     const { section } = data;
-    this.setState({ selectedSection: section});
+    this.setState({ selectedSection: section, newSection: false });
   }
   newSection() {
     this.setState({ newSection: true, selectedSection: null });
