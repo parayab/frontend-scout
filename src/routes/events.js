@@ -8,6 +8,8 @@ import {
   Segment
 } from "semantic-ui-react";
 
+import EventView from "../components/events/eventView";
+
 class EventsView extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +67,8 @@ class EventsView extends Component {
       loadingGroupEvents,
       groupEvents,
       selectedGroupEvent,
-      creatingGroupEvent
+      creatingGroupEvent,
+      loadingSelectedGroupEventAssistants
     } = this.state;
     const welcomeText = !selectedGroupEvent && !creatingGroupEvent;
     if (loadingGroupEvents) {
@@ -101,7 +104,12 @@ class EventsView extends Component {
                 </Segment>
               </Segment>
             )}
-            {selectedGroupEvent && <Segment>Mostrar Evento</Segment>}
+            {selectedGroupEvent && (
+              <EventView
+                groupEvent={selectedGroupEvent}
+                loadingAssistants={loadingSelectedGroupEventAssistants}
+              />
+            )}
             {creatingGroupEvent && <Segment>Mostrar Form</Segment>}
           </Sidebar.Pusher>
         </SidebarPushable>
