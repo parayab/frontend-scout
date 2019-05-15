@@ -29,6 +29,7 @@ class EventsView extends Component {
     this.createGroupEvent = this.createGroupEvent.bind(this);
     this.cancelCreateGroupEvent = this.cancelCreateGroupEvent.bind(this);
     this.editGroupEvent = this.editGroupEvent.bind(this);
+    this.deleteGroupEvent = this.deleteGroupEvent.bind(this);
   }
 
   async getAllGroupEvents() {
@@ -118,6 +119,18 @@ class EventsView extends Component {
     this.setState({ loadingGroupEvents: false, creatingGroupEvent: false });
   }
 
+  async deleteGroupEvent(groupEventId) {
+    this.setState({ loadingGroupEvents: true });
+    await fetch(`groups/1/groupevent/${groupEventId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    this.setState({ loadingGroupEvents: false });
+    this.getAllGroupEvents();
+  }
+
   cancelCreateGroupEvent() {
     this.setState({ creatingGroupEvent: false });
   }
@@ -173,6 +186,7 @@ class EventsView extends Component {
                 groupEvent={selectedGroupEvent}
                 loadingAssistants={loadingSelectedGroupEventAssistants}
                 saveChanges={this.editGroupEvent}
+                deleteGroupEvent={this.deleteGroupEvent}
               />
             )}
             {creatingGroupEvent && (

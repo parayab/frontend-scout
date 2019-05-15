@@ -1,21 +1,41 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
-import { List, Header, Segment, Button, Icon } from "semantic-ui-react";
+import {
+  List,
+  Header,
+  Segment,
+  Button,
+  Icon,
+  Confirm
+} from "semantic-ui-react";
 import EventForm from "./eventForm";
 
 class EventView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: false
+      editMode: false,
+      confirmDelete: false
     };
     this.changeEditMode = this.changeEditMode.bind(this);
+    this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
+    this.handleCancelDelete = this.handleCancelDelete.bind(this);
+    this.openConfirmDelete = this.openConfirmDelete.bind(this);
   }
   changeEditMode() {
     this.setState((state, props) => {
       return { editMode: !state.editMode };
     });
+  }
+  openConfirmDelete() {
+    this.setState({ confirmDelete: true });
+  }
+  handleCancelDelete() {
+    this.setState({ confirmDelete: false });
+  }
+  handleConfirmDelete() {
+    this.props.deleteGroupEvent(this.props.groupEvent.id);
   }
   render() {
     const { groupEvent, saveChanges } = this.props;
@@ -39,17 +59,30 @@ class EventView extends Component {
 
     return (
       <Fragment>
+        <Confirm
+          open={this.state.confirmDelete}
+          cancelButton="Cancelar"
+          confirmButton="Eliminar"
+          content="¿Estás seguro de eliminar el evento?"
+          onCancel={this.handleCancelDelete}
+          onConfirm={this.handleConfirmDelete}
+        />
         <Segment.Group>
           <Segment>
             <Header as="h3">Información del evento</Header>
             {!editMode && EventInfo}
-            {editMode && 
+            {editMode && (
               <EventForm
                 groupEvent={groupEvent}
                 saveChanges={saveChanges}
                 cancelEdition={this.changeEditMode}
               />
-            }
+            )}
+          </Segment>
+          <Segment>
+            <Button basic color="red" onClick={this.openConfirmDelete}>
+              Eliminar evento
+            </Button>
           </Segment>
         </Segment.Group>
       </Fragment>
@@ -60,7 +93,8 @@ class EventView extends Component {
 EventView.propTypes = {
   groupEvent: PropTypes.object.isRequired,
   loadingAssistants: PropTypes.bool.isRequired,
-  saveChanges: PropTypes.func.isRequired
+  saveChanges: PropTypes.func.isRequired,
+  deleteGroupEvent: PropTypes.func.isRequired
 };
 
 export default EventView;
