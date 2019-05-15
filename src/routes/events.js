@@ -9,6 +9,7 @@ import {
 } from "semantic-ui-react";
 
 import EventView from "../components/events/eventView";
+import EventForm from "../components/events/eventForm";
 
 class EventsView extends Component {
   constructor(props) {
@@ -25,6 +26,8 @@ class EventsView extends Component {
     this.getAllGroupEvents = this.getAllGroupEvents.bind(this);
     this.handleGroupEventSelection = this.handleGroupEventSelection.bind(this);
     this.newGroupEvent = this.newGroupEvent.bind(this);
+    this.createGroupEvent = this.createGroupEvent.bind(this);
+    this.cancelCreateGroupEvent = this.cancelCreateGroupEvent.bind(this);
   }
 
   async getAllGroupEvents() {
@@ -56,6 +59,36 @@ class EventsView extends Component {
       selectedGroupEventAssistants: [],
       loadingSelectedGroupEventAssistants: false
     });
+  }
+
+  async createGroupEvent(name, location, foundationDate, description, price) {
+    this.setState({ loadingGroupEvents: true });
+    const response = await fetch(`groups/1/groupevent`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: name,
+        location: location,
+        foundationDate: foundationDate,
+        description: description,
+        price: price
+      })
+    });
+    if (response.ok) {
+      //const resJson = await response.json();
+      await this.getAllGroupEvents();
+      this.setState({
+        creatingGroupEvent: false
+      });
+      return;
+    }
+    this.setState({ loadingGroupEvents: false });
+  }
+
+  cancelCreateGroupEvent() {
+    this.setState({ creatingGroupEvent: false });
   }
 
   componentDidMount() {
@@ -110,7 +143,21 @@ class EventsView extends Component {
                 loadingAssistants={loadingSelectedGroupEventAssistants}
               />
             )}
-            {creatingGroupEvent && <Segment>Mostrar Form</Segment>}
+            {creatingGroupEvent && (
+              <Segment>
+                <Header as="h3">Nuevo evento de grupo</Header>
+                <EventForm
+                  groupEvent={{
+                    name: null,
+                    location: null,
+                    foundationDate: null,
+                    description: null
+                  }}
+                  saveChanges={this.createGroupEvent}
+                  cancelEdition={this.cancelCreateGroupEvent}
+                />
+              </Segment>
+            )}
           </Sidebar.Pusher>
         </SidebarPushable>
       </Fragment>

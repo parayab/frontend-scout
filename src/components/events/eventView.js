@@ -11,8 +11,9 @@ class EventView extends Component {
       <Fragment>
         <List>
           <List.Item>Nombre: {groupEvent.name}</List.Item>
-          <List.Item>Tipo: {groupEvent.location}</List.Item>
+          <List.Item>Ubicación: {groupEvent.location}</List.Item>
           <List.Item>Fecha: {groupEvent.foundationDate}</List.Item>
+          <List.Item>Precio: {groupEvent.price}</List.Item>
           <List.Item>Descripción: {groupEvent.description}</List.Item>
         </List>
       </Fragment>
