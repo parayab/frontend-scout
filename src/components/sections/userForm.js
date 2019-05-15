@@ -20,6 +20,7 @@ class UserForm extends Component {
       roleId: null,
       sectionId: null,
       error: false,
+      emailError: false,
       loading: false,
     }
     this.handleOnClose = this.handleOnClose.bind(this);
@@ -51,6 +52,7 @@ class UserForm extends Component {
       roleId: null,
       sectionId: null,
       error: false,
+      emailError: false,
       loading: false,
     });
   }
@@ -66,10 +68,9 @@ class UserForm extends Component {
     this.props.handleCancel();
   }
   async handleSaveChanges() {
-    this.setState({ error: false });
+    this.setState({ error: false, emailError: false });
     const isValid = this.formValidation();
     if (!isValid) {
-      this.setState({ error: true });
       return;
     }
     const {
@@ -122,7 +123,7 @@ class UserForm extends Component {
     this.setState({ surname2: data.value });
   }
   handleEmailChange(event, data) {
-    this.setState({ email: data.value });
+    this.setState({ email: data.value, emailError: false });
   }
   handleBirthdateChange(event, data) {
     this.setState({ birthdate: data.value });
@@ -142,7 +143,14 @@ class UserForm extends Component {
       address,
       roleId
     } = this.state;
+    const matchEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email);
+    this.setState({ emailError: !matchEmail });
+    
     if (!name1 || !surname1 || !email || !birthdate || !address || !roleId) {
+      this.setState({ error: true });
+      return false;
+    }
+    if (!matchEmail) {
       return false;
     }
     return true;
@@ -181,6 +189,7 @@ class UserForm extends Component {
             placeholder='Nombre' 
             onChange={this.handleFirstNameChange}
             value={this.state.name1}
+            error={!this.state.name1 && this.state.error}
           />
           <Form.Input 
             fluid
@@ -197,6 +206,7 @@ class UserForm extends Component {
             placeholder='Apellido'
             onChange={this.handleFirstSurnameChange}
             value={this.state.surname1}
+            error={!this.state.surname1 && this.state.error}
           />
           <Form.Input
             fluid
@@ -214,13 +224,16 @@ class UserForm extends Component {
             type='email'
             onChange={this.handleEmailChange}
             value={this.state.email}
+            error={this.state.emailError || (!this.state.email && this.state.error)}
           />
           <Form.Input
             fluid
             label='Fecha de nacimiento (*)'
-            placeholder='Fecha de nacimiento'type='date'
+            placeholder='Fecha de nacimiento'
+            type='date'
             onChange={this.handleBirthdateChange}
             value={this.state.birthdate}
+            error={!this.state.birthdate && this.state.error}
           />
         </Form.Group>
         <Form.Group widths='equal'>
@@ -231,6 +244,7 @@ class UserForm extends Component {
             placeholder='Rol'
             onChange={this.handleRoleChange}
             value={this.state.roleId}
+            error={!this.state.roleId && this.state.error}
           />
         </Form.Group>
         <Form.Group widths='equal'>
@@ -240,6 +254,7 @@ class UserForm extends Component {
             placeholder='Dirección'
             onChange={this.handleAddressChange}
             value={this.state.address}
+            error={!this.state.address && this.state.error}
           />
         </Form.Group>
         {this.state.error 
@@ -252,8 +267,7 @@ class UserForm extends Component {
           />
           <br />
         </Fragment>
-        )
-        }
+        )}
       </Form>
     );
 
