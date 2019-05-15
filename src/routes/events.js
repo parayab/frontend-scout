@@ -1,5 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { SidebarPushable, Sidebar, Menu, Icon } from "semantic-ui-react";
+import {
+  Header,
+  SidebarPushable,
+  Sidebar,
+  Menu,
+  Icon,
+  Segment
+} from "semantic-ui-react";
 
 class EventsView extends Component {
   constructor(props) {
@@ -7,9 +14,15 @@ class EventsView extends Component {
     this.state = {
       groupEvents: [],
       loadingGroupEvents: true,
-      groupId: 1
+      groupId: 1,
+      selectedGroupEvent: null,
+      selectedGroupEventAssistants: [],
+      loadingSelectedGroupEventAssistants: false,
+      creatingGroupEvent: false
     };
     this.getAllGroupEvents = this.getAllGroupEvents.bind(this);
+    this.handleGroupEventSelection = this.handleGroupEventSelection.bind(this);
+    this.newGroupEvent = this.newGroupEvent.bind(this);
   }
 
   async getAllGroupEvents() {
@@ -23,27 +36,38 @@ class EventsView extends Component {
     }
   }
 
+  handleGroupEventSelection(event, data) {
+    // groupEvent is always going to be an object
+    const { groupEvent } = data;
+    this.setState({
+      selectedGroupEvent: groupEvent,
+      creatingGroupEvent: false,
+      loadingSelectedGroupEventAssistants: true
+    });
+    //await getSelectedGroupEventAssistants()
+  }
+
+  newGroupEvent() {
+    this.setState({
+      creatingGroupEvent: true,
+      selectedGroupEvent: null,
+      selectedGroupEventAssistants: [],
+      loadingSelectedGroupEventAssistants: false
+    });
+  }
+
   componentDidMount() {
     this.getAllGroupEvents();
-
-    // this.setState({ loading: true });
-    // 	fetch('/groups/1/events').then(response => {
-    //   if(response.ok) {
-    //     return (response.json())
-    //   }
-    //   return null
-    // })
-    // .then(resJson => {
-    //   if(resJson) {
-    //     this.setState({sections: resJson.sections, loading: false})
-    //   } else {
-    //     this.setState({ loading:false })
-    //   }
-    // });
   }
 
   render() {
-    const { loadingGroupEvents, groupEvents } = this.state;
+    const {
+      loadingGroupEvents,
+      groupEvents,
+      selectedGroupEvent,
+      creatingGroupEvent
+    } = this.state;
+    const welcomeText = !selectedGroupEvent && !creatingGroupEvent;
     if (loadingGroupEvents) {
       return <div>Loading...</div>;
     }
@@ -53,19 +77,33 @@ class EventsView extends Component {
           <Sidebar visible={true} as={Menu} vertical inverted>
             <Menu.Item header event={null}>
               Eventos
-              <Icon
-                name="plus"
-                onClick={() => console.log("manejar agregar")}
-                link={true}
-              />
+              <Icon name="plus" onClick={this.newGroupEvent} link={true} />
             </Menu.Item>
             {groupEvents.map(event => (
-              <Menu.Item key={event.id} event={event} onClick={() => {}}>
+              <Menu.Item
+                key={event.id}
+                groupEvent={event}
+                onClick={this.handleGroupEventSelection}
+              >
                 <Icon name="calendar outline" />
                 {event.name}
               </Menu.Item>
             ))}
           </Sidebar>
+          <Sidebar.Pusher>
+            {/* possible states: welcome text, show groupEvent, new group Event */}
+            {welcomeText && (
+              <Segment>
+                <Header as="h3">Administración de eventos de grupo</Header>
+                <Segment>
+                  En esta sección puedes ver, agregar, eliminar y editar todos
+                  los eventos del grupo.
+                </Segment>
+              </Segment>
+            )}
+            {selectedGroupEvent && <Segment>Mostrar Evento</Segment>}
+            {creatingGroupEvent && <Segment>Mostrar Form</Segment>}
+          </Sidebar.Pusher>
         </SidebarPushable>
       </Fragment>
     );
