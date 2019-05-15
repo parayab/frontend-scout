@@ -28,6 +28,7 @@ class EventsView extends Component {
     this.newGroupEvent = this.newGroupEvent.bind(this);
     this.createGroupEvent = this.createGroupEvent.bind(this);
     this.cancelCreateGroupEvent = this.cancelCreateGroupEvent.bind(this);
+    this.editGroupEvent = this.editGroupEvent.bind(this);
   }
 
   async getAllGroupEvents() {
@@ -61,6 +62,36 @@ class EventsView extends Component {
     });
   }
 
+  async editGroupEvent(
+    name,
+    location,
+    foundationDate,
+    description,
+    price,
+    groupEventId
+  ) {
+    this.setState({ loadingGroupEvents: true });
+    const response = await fetch(`groups/1/groupevent/${groupEventId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: name,
+        location: location,
+        foundationDate: foundationDate,
+        description: description,
+        price: price
+      })
+    });
+    if (response.ok) {
+      //const resJson = await response.json();
+      await this.getAllGroupEvents();
+      return;
+    }
+    this.setState({ loadingGroupEvents: false });
+  }
+
   async createGroupEvent(name, location, foundationDate, description, price) {
     this.setState({ loadingGroupEvents: true });
     const response = await fetch(`groups/1/groupevent`, {
@@ -84,7 +115,7 @@ class EventsView extends Component {
       });
       return;
     }
-    this.setState({ loadingGroupEvents: false });
+    this.setState({ loadingGroupEvents: false, creatingGroupEvent: false });
   }
 
   cancelCreateGroupEvent() {
@@ -141,6 +172,7 @@ class EventsView extends Component {
               <EventView
                 groupEvent={selectedGroupEvent}
                 loadingAssistants={loadingSelectedGroupEventAssistants}
+                saveChanges={this.editGroupEvent}
               />
             )}
             {creatingGroupEvent && (

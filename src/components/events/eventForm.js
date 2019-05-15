@@ -29,7 +29,14 @@ class EventForm extends Component {
   saveChanges() {
     const { name, location, foundationDate, description, price } = this.state;
     const { groupEvent } = this.props;
-    if (!name || !location || !foundationDate || !description || !price) {
+    console.log("WENAAA", groupEvent);
+    if (
+      !name ||
+      !location ||
+      !foundationDate ||
+      !description ||
+      price === null
+    ) {
       alert("No puedes dejar campos vacíos");
       return;
     }
@@ -39,7 +46,7 @@ class EventForm extends Component {
       foundationDate,
       description,
       price,
-      groupEvent.Id
+      groupEvent.id
     );
   }
   handleNameChange(event, data) {
