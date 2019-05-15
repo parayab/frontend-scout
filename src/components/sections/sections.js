@@ -19,6 +19,7 @@ class SectionsComponent extends Component {
     this.handleSelectedSection = this.handleSelectedSection.bind(this);
     this.newSection = this.newSection.bind(this);
     this.cancelCreateSection = this.cancelCreateSection.bind(this);
+    this.getMembers = this.getMembers.bind(this);
   }
   async getMembers(section) {
     const response = await fetch(`/groups/1/sections/${section.id}/users`);
@@ -37,6 +38,7 @@ class SectionsComponent extends Component {
     await this.getMembers(section);
     this.setState({ loadingSectionMembers: false });
   }
+
   newSection() {
     this.setState({ 
       newSection: true, 
@@ -103,6 +105,7 @@ class SectionsComponent extends Component {
               deleteSection={this.props.deleteSection}
               members={this.state.selectedSectionMembers}
               loadingMembers={this.state.loadingSectionMembers}
+              getMembers={this.getMembers}
             />
             }
             {this.state.newSection
