@@ -8,21 +8,21 @@ class MembersView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newMember: false, 
+      userFormOpen: false, 
       confirmDeleteOpen: false,
       selectedMember: undefined,
     }
-    this.handleCreateUser = this.handleCreateUser.bind(this);
+    this.handleOpenUserForm = this.handleOpenUserForm.bind(this);
     this.handleCancelCreateUser = this.handleCancelCreateUser.bind(this);
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
     this.handleConfirmDelete= this.handleConfirmDelete.bind(this);
     this.openConfirmDelete = this.openConfirmDelete.bind(this);
   }
-  handleCreateUser() {
-    this.setState({ newMember: true });
+  handleOpenUserForm(user) {
+    this.setState({ userFormOpen: true, selectedMember: user });
   }
   handleCancelCreateUser() {
-    this.setState({ newMember: false });
+    this.setState({ userFormOpen: false });
   }
   handleCancelDelete() {
     this.setState({ confirmDeleteOpen: false, selectedMember: undefined });
@@ -38,13 +38,14 @@ class MembersView extends Component {
     const userFormModal = (
       <UserForm 
         handleCancel={this.handleCancelCreateUser}
-        open={this.state.newMember}
+        open={this.state.userFormOpen}
         getMembers={this.props.getMembers}
         section={this.props.section}
+        selectedMember={this.state.selectedMember}
       />
     )
-    const createNewMemberButton = (
-    <Button onClick={this.handleCreateUser}>
+    const createuserFormOpenButton = (
+    <Button onClick={() => this.handleOpenUserForm(undefined)}>
       <Icon name='add user' />
       Añadir miembro
     </Button>
@@ -65,7 +66,7 @@ class MembersView extends Component {
         <Segment>
           <Header as='h3'>Miembros</Header>
           <Header as='h5'>Aún no hay miembros en esta unidad</Header>
-          { createNewMemberButton }
+          { createuserFormOpenButton }
         </Segment>
       </Fragment>
       )
@@ -82,7 +83,7 @@ class MembersView extends Component {
     );
     return(
       <Fragment>
-        { userFormModal }
+        { this.state.userFormOpen && userFormModal }
         { confirmDelete }
         <Segment>
           <Header as='h3'>Miembros</Header>
@@ -91,7 +92,7 @@ class MembersView extends Component {
               return (
                 <List.Item key={member.id}>
                   <List.Content floated='right'>
-                    <Button onClick={() => this.openConfirmDelete(member)}>
+                    <Button onClick={() => this.handleOpenUserForm(member)}>
                       Editar
                     </Button>
                     <Button basic color='red' onClick={() => this.openConfirmDelete(member)}>
@@ -107,7 +108,7 @@ class MembersView extends Component {
               )
             })}
           </List>
-          { createNewMemberButton }
+          { createuserFormOpenButton }
         </Segment>
       </Fragment>
 
