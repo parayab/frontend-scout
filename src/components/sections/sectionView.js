@@ -85,6 +85,7 @@ class SectionView extends Component {
             members={this.props.members}
             loadingMembers={this.props.loadingMembers}
             getMembers={this.props.getMembers}
+            deleteMember={this.props.deleteMember}
           />
           <Segment>
             <Button basic color='red' onClick={this.openConfirmDelete}>
@@ -107,6 +108,7 @@ SectionView.propTypes = {
   members: PropTypes.array.isRequired,
   loadingMembers: PropTypes.bool.isRequired,
   getMembers: PropTypes.func.isRequired,
+  deleteMember: PropTypes.func.isRequired,
 };
 
 export default SectionView;

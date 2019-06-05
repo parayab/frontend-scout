@@ -20,12 +20,26 @@ class SectionsComponent extends Component {
     this.newSection = this.newSection.bind(this);
     this.cancelCreateSection = this.cancelCreateSection.bind(this);
     this.getMembers = this.getMembers.bind(this);
+    this.deleteMember = this.deleteMember.bind(this);
   }
   async getMembers(section) {
     const response = await fetch(`/groups/1/sections/${section.id}/users`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ selectedSectionMembers: resJson.users });
+    }
+  }
+  async deleteMember(sectionId, memberId) {
+    const response = await fetch(`groups/1/sections/${sectionId}/users/${memberId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+    if (response.ok) {
+      const resJson = await response.json();
+      this.setState({ selectedSectionMembers: resJson.sectionUsers });
+      alert('Usuario eliminado con éxito!');
     }
   }
   async handleSelectedSection(event, data) {
@@ -106,6 +120,7 @@ class SectionsComponent extends Component {
               members={this.state.selectedSectionMembers}
               loadingMembers={this.state.loadingSectionMembers}
               getMembers={this.getMembers}
+              deleteMember={this.deleteMember}
             />
             }
             {this.state.newSection

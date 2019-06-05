@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
-import { Button, Input, Form, Select } from "semantic-ui-react";
+import { Button, Input, Form } from "semantic-ui-react";
 
 class EventForm extends Component {
   constructor(props) {
@@ -29,7 +29,6 @@ class EventForm extends Component {
   saveChanges() {
     const { name, location, foundationDate, description, price } = this.state;
     const { groupEvent } = this.props;
-    console.log("WENAAA", groupEvent);
     if (
       !name ||
       !location ||

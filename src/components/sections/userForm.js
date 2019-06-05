@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import MOCK_DATA from './MOCK_DATA';
