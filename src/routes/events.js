@@ -45,7 +45,6 @@ class EventsView extends Component {
 
   handleGroupEventSelection(event, data) {
     // groupEvent is always going to be an object
-    console.log(data);
     const { groupevent } = data;
     this.setState({
       selectedGroupEvent: groupevent,

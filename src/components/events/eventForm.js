@@ -23,7 +23,7 @@ class EventForm extends Component {
   componentDidMount() {
     const { groupEvent } = this.props;
     const { name, location, foundationDate, description, price } = groupEvent;
-    this.setState({ name, location, foundationDate, description, price });
+    this.setState({ name, location, description, price, foundationDate: foundationDate.split('T')[0]});
   }
 
   saveChanges() {
