@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { List, Header, Segment, Button } from 'semantic-ui-react'
+import { List, Header, Button } from 'semantic-ui-react'
 import PropTypes from 'prop-types';
 
 const MembersList = (props) => {
