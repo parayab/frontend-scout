@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
+import { Dropdown } from 'semantic-ui-react'
 import MembersList from './membersList';
 
 import {
@@ -83,6 +84,15 @@ class EventView extends Component {
     const { groupEvent, saveChanges } = this.props;
     const { editMode } = this.state;
 
+    const allGroupMembers = this.state.groupMembers.map(member => {
+      const option = {
+      key: member.id,
+      text: member.name1 + ' ' + member.surname1,
+      value: member.id
+      }
+      return option;
+    })
+
     const EventInfo = (
       <Fragment>
         <List>
@@ -129,6 +139,7 @@ class EventView extends Component {
                 members={this.state.eventMembers}
                 deleteMember={(member)=>console.log(member)}
               />
+              <Dropdown placeholder='Members' search fluid multiple selection options={allGroupMembers} />
               <Button onClick={()=>console.log('agregando miembros!')}>
                 <Icon name='add user' />
                 Agregar participantes
