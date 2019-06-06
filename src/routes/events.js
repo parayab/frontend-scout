@@ -45,9 +45,10 @@ class EventsView extends Component {
 
   handleGroupEventSelection(event, data) {
     // groupEvent is always going to be an object
-    const { groupEvent } = data;
+    console.log(data);
+    const { groupevent } = data;
     this.setState({
-      selectedGroupEvent: groupEvent,
+      selectedGroupEvent: groupevent,
       creatingGroupEvent: false,
       loadingSelectedGroupEventAssistants: true
     });
@@ -162,7 +163,7 @@ class EventsView extends Component {
             {groupEvents.map(event => (
               <Menu.Item
                 key={event.id}
-                groupEvent={event}
+                groupevent={event}
                 onClick={this.handleGroupEventSelection}
               >
                 <Icon name="calendar outline" />
