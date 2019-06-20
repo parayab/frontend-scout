@@ -30,7 +30,7 @@ export default function withAuth(AuthComponent) {
           /* Oh snap! Looks like there's an error so we'll print it out and log the user out for security reasons. */
           console.log(err);
           Auth.logout();
-          this.props.history.replace("/login");
+          // this.props.history.replace("/login");
         }
       }
     }
