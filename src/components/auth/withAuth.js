@@ -1,21 +1,22 @@
 import React, { Component } from "react";
-import AuthHelperMethods from "./AuthHelperMethods";
+import Login from "./login";
+
 
 /* A higher order component is frequently written as a function that returns a class. */
 export default function withAuth(AuthComponent) {
-  const Auth = new AuthHelperMethods();
-
+  const Auth = new Login();
   return class AuthWrapped extends Component {
     state = {
-      confirm: null,
-      loaded: false
+      confirm: false,
+      loaded: false,
     };
 
     /* In the componentDid<ount, we would want to do a couple of important tasks in order to verify the current users authentication status
     prior to granting them enterance into the app. */
     componentDidMount() {
       if (!Auth.loggedIn()) {
-        this.props.history.replace("/login");
+        console.log("no logged In")
+        //this.props.history.replace("/login");
       } else {
         /* Try to get confirmation message from the Auth helper. */
         try {
@@ -41,7 +42,7 @@ export default function withAuth(AuthComponent) {
           return (
             /* component that is currently being wrapper(App.js) */
             <AuthComponent
-              history={this.props.history}
+              // history={this.props.history}
               confirm={this.state.confirm}
             />
           );
