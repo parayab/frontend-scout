@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from 'prop-types';
+
 import {
   Header,
   SidebarPushable,
@@ -10,6 +12,7 @@ import {
 
 import EventView from "../components/events/eventView";
 import EventForm from "../components/events/eventForm";
+import withAuth from "../components/auth/withAuth";
 
 class EventsView extends Component {
   constructor(props) {
@@ -33,7 +36,7 @@ class EventsView extends Component {
   }
 
   async getAllGroupEvents() {
-    const response = await fetch("/groups/1/groupevent");
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent`);
     if (response.ok) {
       const jsonResponse = await response.json();
       this.setState({
@@ -72,7 +75,7 @@ class EventsView extends Component {
     groupEventId
   ) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent/${groupEventId}`, {
+    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -95,7 +98,7 @@ class EventsView extends Component {
 
   async createGroupEvent(name, location, foundationDate, description, price) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent`, {
+    const response = await fetch(`groups/${this.props.groupId}/groupevent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -121,7 +124,7 @@ class EventsView extends Component {
 
   async deleteGroupEvent(groupEventId) {
     this.setState({ loadingGroupEvents: true });
-    await fetch(`groups/1/groupevent/${groupEventId}`, {
+    await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -211,4 +214,8 @@ class EventsView extends Component {
   }
 }
 
-export default EventsView;
+EventsView.propTypes = {
+  groupId: PropTypes.string.isRequired,
+};
+
+export default withAuth(EventsView);
