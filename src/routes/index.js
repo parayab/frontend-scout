@@ -3,6 +3,8 @@ import { Switch, Route } from "react-router-dom";
 import Loadable from "react-loadable";
 import NotFound from "./notFound";
 import Layout from "../components/layout/layout";
+import Login from "../components/auth/login"
+
 
 const Home = Loadable({
   loader: () => import("../components/home"),
@@ -31,6 +33,7 @@ const Routes = () => (
       <Route exact path="/groups" component={Groups} />
       <Route exact path="/sections" component={Sections} />
       <Route exact path="/events" component={Events} />
+      <Route exact path="/login" component={Login} />
       <Route component={NotFound} />
     </Switch>
   </Layout>
