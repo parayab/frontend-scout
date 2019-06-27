@@ -40,7 +40,6 @@ class Header extends Component {
           {!showMenuItems && (
             <Menu.Menu position='right'>
               <Menu.Item
-                as={Link}
                 name='Login'
               />
             </Menu.Menu>

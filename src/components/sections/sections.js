@@ -63,7 +63,7 @@ class SectionsComponent extends Component {
   }
   
   render() {
-    if(!this.props.sections.length === 0) {return <div>Loading...</div>}
+    if(!this.props.sections || !this.props.sections.length === 0) {return <div>Loading...</div>}
     return(
       <Fragment>
         <Sidebar.Pushable>
