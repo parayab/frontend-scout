@@ -23,14 +23,14 @@ class SectionsComponent extends Component {
     this.deleteMember = this.deleteMember.bind(this);
   }
   async getMembers(section) {
-    const response = await fetch(`/groups/1/sections/${section.id}/users`);
+    const response = await fetch(`/groups/2/sections/${section.id}/users`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ selectedSectionMembers: resJson.users });
     }
   }
   async deleteMember(sectionId, memberId) {
-    const response = await fetch(`groups/1/sections/${sectionId}/users/${memberId}`, {
+    const response = await fetch(`groups/2/sections/${sectionId}/users/${memberId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -66,7 +66,7 @@ class SectionsComponent extends Component {
   }
   
   render() {
-    if(!this.props.sections.length === 0) {return <div>Loading...</div>}
+    if(!this.props.sections || !this.props.sections.length === 0) {return <div>Loading...</div>}
     return(
       <Fragment>
         <Sidebar.Pushable>

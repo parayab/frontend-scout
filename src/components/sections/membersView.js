@@ -87,7 +87,7 @@ class MembersView extends Component {
         { confirmDelete }
         <Segment>
           <Header as='h3'>Miembros</Header>
-          <List divided verticalAlign='middle'>
+          <List divided verticalAlign='middle' style={{overflow: 'auto', maxHeight: 200 }}>
             {this.props.members.map(member => {
               return (
                 <List.Item key={member.id}>
