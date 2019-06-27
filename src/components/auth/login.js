@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import decode from "jwt-decode";
+import { Button, Form, Header, Segment } from 'semantic-ui-react'
 
 /* We want to import our 'AuthHelperMethods' component in order to send a login request */
 
@@ -15,8 +16,8 @@ class Login extends Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
-        this.handleLogin();
+      e.preventDefault();
+      this.handleLogin();
     }
 
     loggedIn = () => {
@@ -87,28 +88,33 @@ class Login extends Component {
 
     render() {
         return (
-            <React.Fragment>
-              <div>
-                  <h1>Login</h1>
-              </div>
-              <form onSubmit={this.handleSubmit}>
-                  <input
-                      placeholder="email@gmail.com"
+            <Fragment>
+              <Segment>
+                <Header>Login</Header>
+                <Form onSubmit={this.handleSubmit}>
+                  <Form.Field>
+                    <label>Email</label>
+                    <input
+                      placeholder="mail@mail.com"
                       name="email"
                       type="text"
                       value={this.state.email}
-                      onChange={this._handleChange}
-                  />
-                  <input
-                      placeholder="Password"
+                      onChange={this._handleChange}/>
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Contraseña</label>
+                    <input
+                      placeholder="********"
                       name="password"
                       type="password"
                       onChange={this._handleChange}
-                  />
-                  <input type="submit" value="Login" />
-                  <button type="button" onClick={this.logout}> Logout </button>
-              </form>
-            </React.Fragment>
+                    />
+                  </Form.Field>
+                  <Button type='submit'>Iniciar sesión</Button>
+                  <Button onClick={this.logout}>Logout</Button>
+                </Form>
+              </Segment>
+            </Fragment>
         );
     }
 }
