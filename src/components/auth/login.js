@@ -70,9 +70,6 @@ class Login extends Component {
       const { email, password } = this.state
       const response = await fetch('session/login', {
           method: "PUT",
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({
             email,
             password,

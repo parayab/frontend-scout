@@ -99,9 +99,6 @@ class UserForm extends Component {
     this.setState({loading: true});
     const response = await fetch(`groups/${this.props.groupId}/sections/${this.props.section.id}/users/${userId}`, {
       method: requestMethod,
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         name1,
         name2,

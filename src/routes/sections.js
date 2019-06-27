@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import SectionsComponent from "../components/sections/sections";
 import withAuth from "../components/auth/withAuth";
-import getHeaders from "../components/auth/headers";
 
 class SectionsView extends Component {
   constructor(props) {
@@ -48,7 +47,6 @@ class SectionsView extends Component {
     this.setState({ loading: true });
     const response = await fetch(`groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "PATCH",
-      headers: getHeaders(),
       body: JSON.stringify({ name: name, typeId: typeId })
     });
     if (response.ok) {
@@ -62,9 +60,6 @@ class SectionsView extends Component {
     this.setState({ loading: true });
     const response = await fetch(`groups/${this.props.groupId}/sections`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({ name: name, typeId: typeId })
     });
     if (response.ok) {
@@ -78,9 +73,6 @@ class SectionsView extends Component {
     this.setState({ loading: true });
     await fetch(`groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
     });
     this.setState({ loading: false });
     this.getAllSections();

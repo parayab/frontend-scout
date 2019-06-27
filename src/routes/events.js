@@ -77,9 +77,6 @@ class EventsView extends Component {
     this.setState({ loadingGroupEvents: true });
     const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({
         name: name,
         location: location,
@@ -100,9 +97,6 @@ class EventsView extends Component {
     this.setState({ loadingGroupEvents: true });
     const response = await fetch(`groups/${this.props.groupId}/groupevent`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({
         name: name,
         location: location,
@@ -126,9 +120,6 @@ class EventsView extends Component {
     this.setState({ loadingGroupEvents: true });
     await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
     });
     this.setState({ loadingGroupEvents: false });
     this.getAllGroupEvents();
