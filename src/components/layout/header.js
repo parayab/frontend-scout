@@ -1,26 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
 
 import { Menu, Segment } from 'semantic-ui-react'
 
 
-export default class Header extends Component {
+class Header extends Component {
 
   render() {
+    const hideItemsFor = ["/login", "/logout"];
     return (
       <Segment inverted attached>
         {/* Aquí debería ir el logo :D */}
         <Menu inverted attached>
-          <Menu.Item 
-            name='Unidades' 
-            as={Link}
-            to={'/sections'}
-          />
-          <Menu.Item
-            name='Eventos'
-            as={Link}
-            to={'/events'}
-          />
+          {hideItemsFor.indexOf(this.props.location.pathname) === -1 &&
+          (<Fragment>
+            <Menu.Item 
+              name='Unidades' 
+              as={Link}
+              to={'/sections'}
+            />
+            <Menu.Item
+              name='Eventos'
+              as={Link}
+              to={'/events'}
+            />
           <Menu.Menu position='right'>
             <Menu.Item
               as={Link}
@@ -28,9 +32,14 @@ export default class Header extends Component {
               to={'/logout'}
             />
           </Menu.Menu>
+          </Fragment>
+          )
+          }
         </Menu>
       </Segment>
 
     )
   }
 }
+
+export default withRouter(Header)
