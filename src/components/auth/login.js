@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import decode from "jwt-decode";
-import { Button, Form, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Header, Segment, Message } from 'semantic-ui-react'
 
 /* We want to import our 'AuthHelperMethods' component in order to send a login request */
 
@@ -8,15 +8,21 @@ class Login extends Component {
     /* In order to utilize our authentication methods within the AuthService class, we want to instantiate a new object */
     state = {
       email: "",
-      password: ""
+      password: "",
+      emailError: false,
+      authError: false
     }
     /* Fired off every time the use enters something into the input fields */
     _handleChange = (e) => {
-      this.setState({[e.target.name]: e.target.value})
+      this.setState({[e.target.name]: e.target.value, emailError: false });
     }
 
     handleSubmit = (e) => {
       e.preventDefault();
+      // eslint-disable-next-line no-useless-escape
+      const matchEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email);
+      this.setState({ emailError: (!matchEmail) });
+      if (!matchEmail) {return}
       this.handleLogin();
     }
 
@@ -83,6 +89,7 @@ class Login extends Component {
           this.props.history.replace("/sections");
         } else {
           console.log("error", res)
+          this.setState({ authError: true });
         }
         /*Here is where all the login logic will go. Upon clicking the login button, we would like to utilize a login method that will send our entered credentials over to the server for verification. Once verified, it should store your token and send you to the protected route. */
       }
@@ -90,7 +97,6 @@ class Login extends Component {
 
     componentDidMount() {
       /* Here is a great place to redirect someone who is already logged in to the protected route */
-      console.log('props: ', this.props);
       if (this.props.location.pathname === "/logout") {
         this.logout();
       }
@@ -101,28 +107,42 @@ class Login extends Component {
           <Fragment>
             <Segment>
               <Header>Login</Header>
-              <Form onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.handleSubmit} error>
                 <Form.Field>
-                  <label>Email</label>
-                  <input
-                    placeholder="mail@mail.com"
+                  <Form.Input
                     name="email"
                     type="text"
-                    value={this.state.email}
+                    fluid
+                    label='Email'
+                    placeholder='mail@mail.com'
                     onChange={this._handleChange}
+                    value={this.state.email}
+                    error={this.state.emailError}
                     autoComplete="username"
                   />
                 </Form.Field>
                 <Form.Field>
-                  <label>Contraseña</label>
-                  <input
-                    placeholder="********"
+                  <Form.Input
                     name="password"
                     type="password"
+                    fluid
+                    label='Contraseña'
+                    placeholder='********'
                     onChange={this._handleChange}
                     autoComplete="current-password"
                   />
                 </Form.Field>
+                {this.state.authError
+                  && 
+                  (<Fragment>
+                    <Message
+                      error
+                      header='Error de autenticación'
+                      content='Credenciales inválidas'
+                    />
+                  </Fragment>
+                  )
+                }
                 <Button type='submit'>Iniciar sesión</Button>
               </Form>
             </Segment>
