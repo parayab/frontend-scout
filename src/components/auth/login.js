@@ -7,12 +7,12 @@ import { Button, Form, Header, Segment } from 'semantic-ui-react'
 class Login extends Component {
     /* In order to utilize our authentication methods within the AuthService class, we want to instantiate a new object */
     state = {
-        email: "",
-        password: ""
+      email: "",
+      password: ""
     }
     /* Fired off every time the use enters something into the input fields */
     _handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value})
+      this.setState({[e.target.name]: e.target.value})
     }
 
     handleSubmit = (e) => {
@@ -42,9 +42,14 @@ class Login extends Component {
     setToken = idToken => {
       localStorage.setItem("id_token", idToken);
     };
-
+    setGroupId = groupId => {
+      localStorage.setItem("group_id", groupId);
+    }
     getToken = () => {
       return localStorage.getItem("id_token");
+    };
+    getGroupId = () => {
+      return localStorage.getItem("group_id");
     };
 
     logout = () => {
@@ -75,6 +80,8 @@ class Login extends Component {
         const res = await response.json();
         if (res.login){
           this.setToken(res.token)
+          this.setGroupId(res.user.section.groupId);
+          this.props.history.replace("/sections");
         } else {
           console.log("error", res)
         }
@@ -83,7 +90,8 @@ class Login extends Component {
     }
 
     componentWillMount() {
-        /* Here is a great place to redirect someone who is already logged in to the protected route */
+      /* Here is a great place to redirect someone who is already logged in to the protected route */
+      console.log('props: ', this.props);
     }
 
     render() {

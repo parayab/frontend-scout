@@ -16,7 +16,7 @@ export default function withAuth(AuthComponent) {
     componentDidMount() {
       if (!Auth.loggedIn()) {
         console.log("no logged In")
-        //this.props.history.replace("/login");
+        this.props.history.replace("/login");
       } else {
         /* Try to get confirmation message from the Auth helper. */
         try {
@@ -42,7 +42,7 @@ export default function withAuth(AuthComponent) {
           return (
             /* component that is currently being wrapper(App.js) */
             <AuthComponent
-              // history={this.props.history}
+              groupId={Auth.getGroupId()}
               confirm={this.state.confirm}
             />
           );

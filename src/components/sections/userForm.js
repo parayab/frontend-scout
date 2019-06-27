@@ -97,7 +97,7 @@ class UserForm extends Component {
     } = this.state;
     const userId = this.props.selectedMember ? this.props.selectedMember.id : '';
     this.setState({loading: true});
-    const response = await fetch(`groups/1/sections/${this.props.section.id}/users/${userId}`, {
+    const response = await fetch(`groups/${this.props.groupId}/sections/${this.props.section.id}/users/${userId}`, {
       method: requestMethod,
       headers: {
         'Content-Type': 'application/json',
@@ -314,6 +314,7 @@ UserForm.propTypes = {
   getMembers: PropTypes.func.isRequired,
   section: PropTypes.object.isRequired,
   selectedMember: PropTypes.object,
+  groupId: PropTypes.string.isRequired,
 }
 
 export default UserForm;

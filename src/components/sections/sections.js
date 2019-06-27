@@ -23,14 +23,14 @@ class SectionsComponent extends Component {
     this.deleteMember = this.deleteMember.bind(this);
   }
   async getMembers(section) {
-    const response = await fetch(`/groups/1/sections/${section.id}/users`);
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${section.id}/users`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ selectedSectionMembers: resJson.users });
     }
   }
   async deleteMember(sectionId, memberId) {
-    const response = await fetch(`groups/1/sections/${sectionId}/users/${memberId}`, {
+    const response = await fetch(`groups/${this.props.groupId}/sections/${sectionId}/users/${memberId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -121,6 +121,7 @@ class SectionsComponent extends Component {
               loadingMembers={this.state.loadingSectionMembers}
               getMembers={this.getMembers}
               deleteMember={this.deleteMember}
+              groupId={this.props.groupId}
             />
             }
             {this.state.newSection
@@ -151,6 +152,7 @@ SectionsComponent.propTypes = {
   saveChanges: PropTypes.func.isRequired,
   newSection: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 
 export default SectionsComponent;
