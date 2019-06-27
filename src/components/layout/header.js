@@ -21,6 +21,13 @@ export default class Header extends Component {
             as={Link}
             to={'/events'}
           />
+          <Menu.Menu position='right'>
+            <Menu.Item
+              as={Link}
+              name='Logout'
+              to={'/logout'}
+            />
+          </Menu.Menu>
         </Menu>
       </Segment>
 

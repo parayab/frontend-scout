@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import decode from "jwt-decode";
 import { Button, Form, Header, Segment } from 'semantic-ui-react'
+import { withRouter } from "react-router";
 
 /* We want to import our 'AuthHelperMethods' component in order to send a login request */
 
@@ -55,6 +56,8 @@ class Login extends Component {
     logout = () => {
       console.log("logout!")
       localStorage.removeItem("id_token");
+      localStorage.removeItem("group_id");
+
     };
 
     getConfirm = () => {
@@ -89,9 +92,12 @@ class Login extends Component {
       }
     }
 
-    componentWillMount() {
+    componentDidMount() {
       /* Here is a great place to redirect someone who is already logged in to the protected route */
       console.log('props: ', this.props);
+      if (this.props.location.pathname === "/logout") {
+        this.logout();
+      }
     }
 
     render() {
@@ -107,7 +113,9 @@ class Login extends Component {
                       name="email"
                       type="text"
                       value={this.state.email}
-                      onChange={this._handleChange}/>
+                      onChange={this._handleChange}
+                      autoComplete="username"
+                    />
                   </Form.Field>
                   <Form.Field>
                     <label>Contraseña</label>
@@ -116,10 +124,10 @@ class Login extends Component {
                       name="password"
                       type="password"
                       onChange={this._handleChange}
+                      autoComplete="current-password"
                     />
                   </Form.Field>
                   <Button type='submit'>Iniciar sesión</Button>
-                  <Button onClick={this.logout}>Logout</Button>
                 </Form>
               </Segment>
             </Fragment>

@@ -34,6 +34,7 @@ const Routes = () => (
       <Route exact path="/groups" component={Groups} />
       <Route exact path="/events" component={Events} />
       <Route exact path="/login" component={Login} />
+      <Route exact path="/logout" component={Login} />
       <Route component={NotFound} />
     </Switch>
   </Layout>
