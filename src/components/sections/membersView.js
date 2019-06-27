@@ -42,6 +42,7 @@ class MembersView extends Component {
         getMembers={this.props.getMembers}
         section={this.props.section}
         selectedMember={this.state.selectedMember}
+        groupId={this.props.groupId}
       />
     )
     const createuserFormOpenButton = (
@@ -122,6 +123,7 @@ MembersView.propTypes = {
   loadingMembers: PropTypes.bool.isRequired,
   getMembers: PropTypes.func.isRequired,
   deleteMember: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 
 export default MembersView;

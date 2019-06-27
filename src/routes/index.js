@@ -30,10 +30,11 @@ const Routes = () => (
   <Layout>
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/groups" component={Groups} />
       <Route exact path="/sections" component={Sections} />
+      <Route exact path="/groups" component={Groups} />
       <Route exact path="/events" component={Events} />
       <Route exact path="/login" component={Login} />
+      <Route exact path="/logout" component={Login} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

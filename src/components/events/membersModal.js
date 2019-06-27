@@ -17,7 +17,7 @@ class MembersModal extends Component {
   }
   async componentDidMount() {
     this.setState({isFetchingNonAssistants: true});
-    const response = await fetch(`groups/2/users`);
+    const response = await fetch(`groups/${this.props.groupId}/users`);
     if (response.ok) {
       const resJson = await response.json();
       const usersInfo = resJson.users.map(user => {
@@ -31,11 +31,10 @@ class MembersModal extends Component {
   }
 
   addMembers() {
-    // const response = await fetch(`/groups/2/`)
     const list = []
     this.state.nonAssistants.forEach(member => {
       if (!member.selected) {return}
-      list.push(fetch(`/groups/2/groupevent/${this.props.groupEventId}/addUser/${member.id}`, {
+      list.push(fetch(`/groups/${this.props.groupId}/groupevent/${this.props.groupEventId}/addUser/${member.id}`, {
         method: 'POST',
       }))
     });
@@ -117,6 +116,7 @@ MembersModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleCancel: PropTypes.func.isRequired,
   fetchAllParticipants: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
   groupEventId: PropTypes.number.isRequired
 }
 

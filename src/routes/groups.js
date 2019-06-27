@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import withAuth from "../components/auth/withAuth";
 
 function List(props) {
-  const listItems = props.groups.map(item => <li key={item.id}>{item.id}</li>);
+  const listItems = props.groups.map(item => <li key={item.id}>{item.name}</li>);
   return <ul>{listItems}</ul>;
 }
 
-export default class AdminGroups extends Component {
+class AdminGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,3 +30,5 @@ export default class AdminGroups extends Component {
     }
   }
 }
+
+export default withAuth(AdminGroups);

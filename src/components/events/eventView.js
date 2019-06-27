@@ -70,7 +70,7 @@ class EventView extends Component {
   async getAllParticipants() {
     this.setState({ isFetchingParticipants: true });
     const groupEventId = this.props.groupEvent.id;
-    const response = await fetch(`groups/2/groupevent/${groupEventId}/getusers`);
+    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}/getusers`);
     if (response.ok) {
       const resJson = await response.json();
       if (resJson.users) {
@@ -83,7 +83,7 @@ class EventView extends Component {
 
   async removeParticipant(participant) {
     const groupEventId = this.props.groupEvent.id;
-    const response = await fetch(`groups/2/groupevent/${groupEventId}/deleteUser/${participant.id}`,{
+    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}/deleteUser/${participant.id}`,{
       method: 'DELETE'
     });
     if (response.ok){
@@ -149,6 +149,7 @@ class EventView extends Component {
                 open={this.state.showMembersModal}
                 handleCancel={this.handleCloseMembersModal}
                 fetchAllParticipants={this.getAllParticipants}
+                groupId={this.props.groupId}
                 groupEventId={groupEvent.id}
               />}
             </Fragment>
@@ -169,7 +170,8 @@ EventView.propTypes = {
   groupEvent: PropTypes.object.isRequired,
   loadingAssistants: PropTypes.bool.isRequired,
   saveChanges: PropTypes.func.isRequired,
-  deleteGroupEvent: PropTypes.func.isRequired
+  deleteGroupEvent: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 
 export default EventView;
