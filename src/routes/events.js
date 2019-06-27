@@ -33,7 +33,7 @@ class EventsView extends Component {
   }
 
   async getAllGroupEvents() {
-    const response = await fetch("/groups/1/groupevent");
+    const response = await fetch(`/groups/2/groupevent`);
     if (response.ok) {
       const jsonResponse = await response.json();
       this.setState({
@@ -72,7 +72,7 @@ class EventsView extends Component {
     groupEventId
   ) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent/${groupEventId}`, {
+    const response = await fetch(`groups/2/groupevent/${groupEventId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -95,7 +95,7 @@ class EventsView extends Component {
 
   async createGroupEvent(name, location, foundationDate, description, price) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent`, {
+    const response = await fetch(`groups/2/groupevent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -121,7 +121,7 @@ class EventsView extends Component {
 
   async deleteGroupEvent(groupEventId) {
     this.setState({ loadingGroupEvents: true });
-    await fetch(`groups/1/groupevent/${groupEventId}`, {
+    await fetch(`groups/2/groupevent/${groupEventId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -194,10 +194,11 @@ class EventsView extends Component {
                 <Header as="h3">Nuevo evento de grupo</Header>
                 <EventForm
                   groupEvent={{
-                    name: null,
-                    location: null,
-                    foundationDate: null,
-                    description: null
+                    name: '',
+                    location: '',
+                    foundationDate: '',
+                    description: '',
+                    price: '',
                   }}
                   saveChanges={this.createGroupEvent}
                   cancelEdition={this.cancelCreateGroupEvent}

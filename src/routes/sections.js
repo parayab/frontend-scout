@@ -24,7 +24,7 @@ class SectionsView extends Component {
   }
 
   async getAllSections() {
-    const response = await fetch("/groups/1/sections");
+    const response = await fetch(`/groups/2/sections`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ sections: resJson.sections });
@@ -32,7 +32,7 @@ class SectionsView extends Component {
   }
 
   async getSectionTypes() {
-    const response = await fetch("/groups/1/sections/sectionTypes");
+    const response = await fetch(`/groups/2/sections/sectionTypes`);
     if (response.ok) {
       const resJson = await response.json();
       const validSectionTypes = resJson.sectionTypes.map(section => {
@@ -44,7 +44,7 @@ class SectionsView extends Component {
 
   async editSection(name, typeId, sectionId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/1/sections/${sectionId}`, {
+    const response = await fetch(`groups/2/sections/${sectionId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -60,7 +60,7 @@ class SectionsView extends Component {
 
   async newSection(name, typeId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/1/sections`, {
+    const response = await fetch(`groups/2/sections`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -76,7 +76,7 @@ class SectionsView extends Component {
 
   async deleteSection(sectionId) {
     this.setState({ loading: true });
-    await fetch(`groups/1/sections/${sectionId}`, {
+    await fetch(`groups/2/sections/${sectionId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"

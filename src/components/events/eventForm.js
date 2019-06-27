@@ -7,11 +7,11 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: null,
-      location: null,
-      foundationDate: null,
-      description: null,
-      price: null
+      name: "",
+      location: "",
+      foundationDate: "",
+      description: "",
+      price: ""
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -23,7 +23,8 @@ class EventForm extends Component {
   componentDidMount() {
     const { groupEvent } = this.props;
     const { name, location, foundationDate, description, price } = groupEvent;
-    this.setState({ name, location, description, price, foundationDate: foundationDate.split('T')[0]});
+    const auxDate = foundationDate ? foundationDate.split('T')[0]: "";
+    this.setState({ name, location, description, price, foundationDate: auxDate });
   }
 
   saveChanges() {
@@ -34,7 +35,7 @@ class EventForm extends Component {
       !location ||
       !foundationDate ||
       !description ||
-      price === null
+      price === ""
     ) {
       alert("No puedes dejar campos vacíos");
       return;

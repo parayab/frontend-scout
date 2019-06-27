@@ -25,24 +25,24 @@ const MembersList = (props) => {
   return (
     <Fragment>
       <Header as='h3'>Asistentes</Header>
-      <List divided verticalAlign='middle'>
-        {members.map(member => {
-          return (
-            <List.Item key={member.id}>
-              <List.Content floated='right'>
-                <Button basic color='red' onClick={() => props.deleteMember(member)}>
-                  Eliminar
-                </Button>
-              </List.Content>
-              <List.Icon name='user' size='large' verticalAlign='middle' />
-              <List.Content>
-                <List.Header>{member.name1 + ' ' + member.surname1}</List.Header>
-                <List.Description>{member.email}</List.Description>
-              </List.Content>
-            </List.Item>
-          )
-        })}
-      </List>
+        <List divided verticalAlign='middle' style={{overflow: 'auto', maxHeight: 200 }}>
+          {members.map(member => {
+            return (
+              <List.Item key={member.id}>
+                <List.Content floated='right'>
+                  <Button basic color='red' onClick={() => props.deleteMember(member)}>
+                    Eliminar
+                  </Button>
+                </List.Content>
+                <List.Icon name='user' size='large' verticalAlign='middle' />
+                <List.Content>
+                  <List.Header>{member.name1 + ' ' + member.surname1}</List.Header>
+                  <List.Description>{member.email}</List.Description>
+                </List.Content>
+              </List.Item>
+            )
+          })}
+        </List>
     </Fragment>
   );
 }
