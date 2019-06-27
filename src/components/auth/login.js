@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import decode from "jwt-decode";
 import { Button, Form, Header, Segment } from 'semantic-ui-react'
-import { withRouter } from "react-router";
 
 /* We want to import our 'AuthHelperMethods' component in order to send a login request */
 
@@ -102,35 +101,35 @@ class Login extends Component {
 
     render() {
         return (
-            <Fragment>
-              <Segment>
-                <Header>Login</Header>
-                <Form onSubmit={this.handleSubmit}>
-                  <Form.Field>
-                    <label>Email</label>
-                    <input
-                      placeholder="mail@mail.com"
-                      name="email"
-                      type="text"
-                      value={this.state.email}
-                      onChange={this._handleChange}
-                      autoComplete="username"
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <label>Contraseña</label>
-                    <input
-                      placeholder="********"
-                      name="password"
-                      type="password"
-                      onChange={this._handleChange}
-                      autoComplete="current-password"
-                    />
-                  </Form.Field>
-                  <Button type='submit'>Iniciar sesión</Button>
-                </Form>
-              </Segment>
-            </Fragment>
+          <Fragment>
+            <Segment>
+              <Header>Login</Header>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Field>
+                  <label>Email</label>
+                  <input
+                    placeholder="mail@mail.com"
+                    name="email"
+                    type="text"
+                    value={this.state.email}
+                    onChange={this._handleChange}
+                    autoComplete="username"
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Contraseña</label>
+                  <input
+                    placeholder="********"
+                    name="password"
+                    type="password"
+                    onChange={this._handleChange}
+                    autoComplete="current-password"
+                  />
+                </Form.Field>
+                <Button type='submit'>Iniciar sesión</Button>
+              </Form>
+            </Segment>
+          </Fragment>
         );
     }
 }
