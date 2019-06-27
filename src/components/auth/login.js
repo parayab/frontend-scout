@@ -40,7 +40,7 @@ class Login extends Component {
           return true;
         } else return false;
       } catch (err) {
-        console.log("expired check failed! Line 42: AuthService.js");
+        // console.log("expired check failed! Line 42: AuthService.js");
         return false;
       }
     };
@@ -59,7 +59,7 @@ class Login extends Component {
     };
 
     logout = () => {
-      console.log("logout!")
+      // console.log("logout!")
       localStorage.removeItem("id_token");
       localStorage.removeItem("group_id");
 
@@ -68,7 +68,7 @@ class Login extends Component {
     getConfirm = () => {
       // Using jwt-decode npm package to decode the token
       const answer = decode(this.getToken());
-      console.log("Recieved answer!", answer);
+      // console.log("Recieved answer!", answer);
       return answer;
     };
 
@@ -88,7 +88,6 @@ class Login extends Component {
           this.setGroupId(res.user.section.groupId);
           this.props.history.replace("/sections");
         } else {
-          console.log("error", res)
           this.setState({ authError: true });
         }
         /*Here is where all the login logic will go. Upon clicking the login button, we would like to utilize a login method that will send our entered credentials over to the server for verification. Once verified, it should store your token and send you to the protected route. */
