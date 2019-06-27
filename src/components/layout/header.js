@@ -9,11 +9,14 @@ class Header extends Component {
 
   render() {
     const hideItemsFor = ["/login", "/logout"];
+    const showMenuItems = hideItemsFor.indexOf(this.props.location.pathname) === -1;
     return (
       <Segment inverted attached>
-        {/* Aquí debería ir el logo :D */}
         <Menu inverted attached>
-          {hideItemsFor.indexOf(this.props.location.pathname) === -1 &&
+          <Menu.Item>
+            <img src="favicon.png" alt="logo" />
+          </Menu.Item>
+          {showMenuItems &&
           (<Fragment>
             <Menu.Item 
               name='Unidades' 
@@ -33,8 +36,16 @@ class Header extends Component {
             />
           </Menu.Menu>
           </Fragment>
-          )
-          }
+          )}
+          {!showMenuItems && (
+            <Menu.Menu position='right'>
+              <Menu.Item
+                as={Link}
+                name='Login'
+              />
+            </Menu.Menu>
+          )}
+
         </Menu>
       </Segment>
 
