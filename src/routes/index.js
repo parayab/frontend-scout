@@ -26,13 +26,22 @@ const Events = Loadable({
   loading: () => <div>Loading...</div>
 });
 
+const PrivateRoute = ({component: Component, ...rest}) => {
+  if (localStorage.getItem('id_token')) {
+    console.log(rest);
+    return <Route {...rest} component={Component}/>
+  }
+  return <div>No logueado!</div>
+}
+
 const Routes = () => (
   <Layout>
     <Switch>
       <Route exact path="/" component={Home} />
+      <PrivateRoute exact path="/sections" component={Sections} />
       <Route exact path="/groups" component={Groups} />
-      <Route exact path="/sections" component={Sections} />
       <Route exact path="/events" component={Events} />
+
       <Route exact path="/login" component={Login} />
       <Route component={NotFound} />
     </Switch>
