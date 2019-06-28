@@ -17,10 +17,10 @@ class Dashboard extends Component {
   }
   async componentDidMount() {
     this.setState({ isFetching: true });
-    await this.getGroupInfo();
-    await this.getAllMembers();
-    await this.getAllEvents();
-    this.setState({ isFetching: false });
+    const allRequests = Promise.all([this.getGroupInfo(), this.getAllMembers(), this.getAllEvents()]);
+    allRequests.then(() => {
+      this.setState({ isFetching: false });
+    });
   }
   async getGroupInfo() {
     const response = await fetch(`/groups/${this.props.groupId}`);
@@ -53,7 +53,6 @@ class Dashboard extends Component {
     const pendingEvents = this.state.groupEvents.filter(event => {
       return event.foundationDate && moment(event.foundationDate).isAfter(today);
     });
-    console.log(pendingEvents);
     return (
       <Grid celled='internally'>
         <Grid.Row>
