@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import withAuth from '../components/auth/withAuth';
-import { Header, Grid, Icon, List } from 'semantic-ui-react';
+import { Header, Grid, Menu, Icon, List } from 'semantic-ui-react';
 import moment from 'moment';
 
 import DashboardCalendar from '../components/dashboard/calendar';
+import DashboardAccounting from '../components/dashboard/accounting';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -15,7 +16,9 @@ class Dashboard extends Component {
       groupInfo: {},
       groupMembers: [],
       groupEvents: [],
+      currentTab: 'calendar'
     };
+    this.changeTab = this.changeTab.bind(this);
   }
   async componentDidMount() {
     this.setState({ isFetching: true });
@@ -46,6 +49,9 @@ class Dashboard extends Component {
       this.setState({ groupEvents: resJson.groupEvents });
     }
   }
+  changeTab(event, {name}) {
+    this.setState({ currentTab: name });
+  }
   render() {
     if (this.state.isFetching) {
       return <Header>Cargando...</Header>;
@@ -58,7 +64,7 @@ class Dashboard extends Component {
     return (
       <Grid celled='internally'>
         <Grid.Row>
-          <Grid.Column width={2}>
+          <Grid.Column width={3}>
             <Header>
               <Icon name="users"/>
               {this.state.groupInfo.name}
@@ -73,9 +79,18 @@ class Dashboard extends Component {
                 {pendingEvents.length} {pendingEvents.length === 1 ? 'evento pendiente' : 'eventos pendientes' }
               </List.Item>
             </List>
+            <Menu fluid vertical tabular width="100%">
+              <Menu.Item name="calendar" active={this.state.currentTab === 'calendar'} onClick={this.changeTab} />
+              <Menu.Item name="accounting" active={this.state.currentTab === 'accounting'} onClick={this.changeTab} />
+            </Menu>
           </Grid.Column>
           <Grid.Column width={13}>
+            {this.state.currentTab === 'calendar' && 
             <DashboardCalendar groupId={this.props.groupId} groupEvents={this.state.groupEvents} />
+            }
+            {this.state.currentTab === 'accounting' && 
+            <DashboardAccounting groupId={this.props.groupId} />
+            }
           </Grid.Column>
         </Grid.Row>
 
