@@ -53,7 +53,7 @@ class Dashboard extends Component {
     // return <Header>Dashboard pulento! {this.state.groupInfo.name}</Header>;
     const today = moment();
     const pendingEvents = this.state.groupEvents.filter(event => {
-      return event.foundationDate && moment(event.foundationDate).isAfter(today);
+      return event.foundationDate && moment(event.foundationDate).diff(today, "days") >= 0;
     });
     return (
       <Grid celled='internally'>
