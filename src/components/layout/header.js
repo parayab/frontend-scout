@@ -17,7 +17,7 @@ class Header extends Component {
             as={Link}
             to={'/'}
           >
-            <img src="favicon.png" alt="logo" />
+            <img src="\favicon.png" alt="logo" />
           </Menu.Item>
           {showMenuItems &&
           (<Fragment>
