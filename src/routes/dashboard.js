@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import withAuth from '../components/auth/withAuth';
-import { Header, Grid, Segment, Icon, List } from 'semantic-ui-react';
+import { Header, Grid, Icon, List } from 'semantic-ui-react';
 import moment from 'moment';
+
+import DashboardCalendar from '../components/dashboard/calendar';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -73,9 +75,7 @@ class Dashboard extends Component {
             </List>
           </Grid.Column>
           <Grid.Column width={13}>
-            <Segment>
-              Aca va otro componente!
-            </Segment>
+            <DashboardCalendar groupId={this.props.groupId} groupEvents={this.state.groupEvents} />
           </Grid.Column>
         </Grid.Row>
 
