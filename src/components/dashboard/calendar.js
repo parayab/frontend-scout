@@ -27,7 +27,7 @@ class DashboardCalendar extends Component {
     });
     console.log(events);
     return (
-      <div style={{height: "550px"}}>
+      <div style={{height: "38em"}}>
         <Calendar
           localizer={localizer}
           events={events}
