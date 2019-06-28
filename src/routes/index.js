@@ -7,7 +7,7 @@ import Login from "../components/auth/login"
 
 
 const Home = Loadable({
-  loader: () => import("../components/home"),
+  loader: () => import("./home"),
   loading: () => <div>Loading...</div>
 });
 
@@ -26,6 +26,11 @@ const Events = Loadable({
   loading: () => <div>Loading...</div>
 });
 
+const Dashboard = Loadable({
+  loader: () => import("./dashboard"),
+  loading: () => <div>Loading...</div>
+});
+
 const Routes = () => (
   <Layout>
     <Switch>
@@ -35,6 +40,7 @@ const Routes = () => (
       <Route exact path="/events" component={Events} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/logout" component={Login} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route component={NotFound} />
     </Switch>
   </Layout>
