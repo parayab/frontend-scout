@@ -105,6 +105,7 @@ class EventChecklist extends Component {
       <Segment loading={this.state.isFetching}>
         <Header as="h3">Tareas</Header>
         <List divided verticalAlign='middle' style={{overflowY: 'auto', overflowX: 'ellipsis', maxHeight: 200 }}>
+          {this.state.checklist.length === 0 && <Header as="h5">Aún no hay tareas</Header>}
           {this.state.checklist.map(task => {
             const fontStyle = task.completed ? "line-through" : "none";
             return (
