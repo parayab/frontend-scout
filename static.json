@@ -3,5 +3,7 @@
   "routes": {
     "/**": "index.html"
   },
-  "proxy": "https://backend-scout.herokuapp.com"
+  "proxies": {
+    "origin": "https://backend-scout.herokuapp.com"
+  }
 } 
