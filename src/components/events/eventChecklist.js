@@ -78,7 +78,9 @@ class EventChecklist extends Component {
       if (response.ok) {
         const resJson = await response.json();
         this.setState({ checklist: resJson.checklists, newTask: "", submittingTask: false });
+        return;
       }
+      this.setState({ newTask: "" });
     }
   }
 
@@ -102,21 +104,26 @@ class EventChecklist extends Component {
     return (
       <Segment loading={this.state.isFetching}>
         <Header as="h3">Tareas</Header>
-        <List divided verticalAlign='middle' style={{overflow: 'auto', maxHeight: 200 }}>
+        <List divided verticalAlign='middle' style={{overflowY: 'auto', overflowX: 'ellipsis', maxHeight: 200 }}>
           {this.state.checklist.map(task => {
             const fontStyle = task.completed ? "line-through" : "none";
             return (
               <List.Item key={task.id}>
-                <Checkbox
-                  style={{textDecoration : fontStyle }}
-                  label={task.name}
-                  key={task.id}
-                  onChange={() => this.handleToggle(task.id)}
-                  checked={task.completed}
-                  readOnly={this.props.readOnly}
-                />
-                <List.Content floated='right'>
-                  <Button task={task} onClick={this.deleteTask}>x</Button>
+                <List.Content style={{ display: "inline-block" }}>
+                  <Checkbox
+                    style={{ textDecoration : fontStyle, display: "inline-block" }}
+                    label={task.name}
+                    key={task.id}
+                    onChange={() => this.handleToggle(task.id)}
+                    checked={task.completed}
+                    readOnly={this.props.readOnly}
+                  />
+                </List.Content>
+                <List.Content style={{ display: "inline-block" }}>
+                  <Button
+                    floated="right"
+                    compact basic size="mini"
+                    task={task} onClick={this.deleteTask}>x</Button>
                 </List.Content>
               </List.Item>
             );
@@ -125,6 +132,7 @@ class EventChecklist extends Component {
         {this.state.addingTask && 
         <Form error onSubmit={this.handleSubmit}>
           <Form.Input
+            autoFocus
             fluid
             placeholder='Agregar tarea...' 
             onChange={this.onTaskChange}
