@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import { List, Checkbox, Header, Segment } from 'semantic-ui-react';
+import { List, Checkbox, Header, Segment, Button, Form } from 'semantic-ui-react';
 
 class EventChecklist extends Component {
   constructor(props) {
     super(props);
     this.state = {
       checklist: [],
-      editing: false,
+      addingTask: false,
       isFetching: false,
+      newTask: "",
+      submittingTask: false,
     }
     this.handleToggle = this.handleToggle.bind(this);
+    this.toggleTaskForm = this.toggleTaskForm.bind(this);
+    this.onTaskChange = this.onTaskChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     this.fetchChecklist();
@@ -48,8 +53,34 @@ class EventChecklist extends Component {
         return { checklist: newChecklist }
       });
     }
-
   }
+
+  toggleTaskForm() {
+    this.setState(prevState => { return { addingTask: !prevState.addingTask, submittingTask: false } });
+  }
+
+  onTaskChange(event, data) {
+    this.setState({ newTask: data.value, submittingTask: false });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ submittingTask: true });
+    if (this.state.newTask) {
+      const { groupEventId, groupId } = this.props;
+      const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: this.state.newTask
+        })
+      });
+      if (response.ok) {
+        const resJson = await response.json();
+        this.setState({ checklist: resJson.checklists, newTask: "", submittingTask: false });
+      }
+    }
+  }
+
 
   render () {
     return (
@@ -72,6 +103,27 @@ class EventChecklist extends Component {
             );
           })}
         </List>
+        {this.state.addingTask && 
+        <Form error onSubmit={this.handleSubmit}>
+          <Form.Input
+            fluid
+            placeholder='Agregar tarea...' 
+            onChange={this.onTaskChange}
+            value={this.state.newTask}
+            error={!this.state.newTask && this.state.submittingTask }
+          />
+          <Button.Group>
+            <Button type='submit'>Agregar</Button>
+            <Button onClick={this.toggleTaskForm}>Cancelar</Button>
+          </Button.Group>
+        </Form>
+        }
+
+        {!this.state.addingTask && 
+          <Button onClick={this.toggleTaskForm}>
+            Agregar tarea
+          </Button>
+        }
       </Segment>
     );
   }
