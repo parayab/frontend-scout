@@ -100,7 +100,7 @@ class EventView extends Component {
         <List>
           <List.Item>Nombre: {groupEvent.name}</List.Item>
           <List.Item>Ubicación: {groupEvent.location}</List.Item>
-          <List.Item>Fecha: {groupEvent.foundationDate ? moment(groupEvent.foundationDate).locale('es').format('LL') : ""}</List.Item>
+          <List.Item>Fecha: {groupEvent.foundationDate ? moment(groupEvent.foundationDate).add(1, "day").locale('es').format('LL') : ""}</List.Item>
           <List.Item>Precio: {groupEvent.price}</List.Item>
           <List.Item>Descripción: {groupEvent.description}</List.Item>
         </List>

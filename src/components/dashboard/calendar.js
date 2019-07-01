@@ -5,6 +5,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment';
 import 'moment/locale/es';
 import { Modal, List, Icon } from 'semantic-ui-react';
+import EventChecklist from '../events/eventChecklist';
 
 /*Todos los moment().add(1, "day") es porque no estamos guardando hora, entonces las fechas se guardan con hora
 00:00:00 y eso moment lo interpreta como el fin del día anterior :c */ 
@@ -62,6 +63,7 @@ class DashboardCalendar extends Component {
                 Precio: {selectedEvent.price !== 0 ? selectedEvent.price : `gratis`}
               </List.Item>
             </List>
+            <EventChecklist groupEventId={selectedEvent.id} groupId={this.props.groupId} readOnly/>
           </Modal.Content>
         </Modal>
         }
@@ -92,6 +94,7 @@ class DashboardCalendar extends Component {
 }
 
 DashboardCalendar.propTypes = {
-  groupEvents: PropTypes.array.isRequired
+  groupEvents: PropTypes.array.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 export default DashboardCalendar;

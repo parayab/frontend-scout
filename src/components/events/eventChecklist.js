@@ -118,13 +118,17 @@ class EventChecklist extends Component {
                     onChange={() => this.handleToggle(task.id)}
                     checked={task.completed}
                     readOnly={this.props.readOnly}
+                    disabled={this.props.readOnly}
                   />
                 </List.Content>
                 <List.Content style={{ display: "inline-block" }}>
                   <Button
                     floated="right"
                     compact basic size="mini"
-                    task={task} onClick={this.deleteTask}>x</Button>
+                    task={task} onClick={this.deleteTask}
+                    disabled={this.props.readOnly}>
+                    x
+                  </Button>
                 </List.Content>
               </List.Item>
             );
@@ -147,7 +151,7 @@ class EventChecklist extends Component {
         </Form>
         }
 
-        {!this.state.addingTask && 
+        {!this.props.readOnly && !this.state.addingTask && 
           <Button onClick={this.toggleTaskForm}>
             Agregar tarea
           </Button>
