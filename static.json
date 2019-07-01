@@ -1,0 +1,7 @@
+{
+  "root": "build/",
+  "routes": {
+    "/**": "index.html"
+  },
+  "proxy": "https://backend-scout.herokuapp.com"
+} 
