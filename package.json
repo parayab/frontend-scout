@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "fetch-intercept": "^2.3.1",
-    "moment": "^2.24.0",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
     "react": "^16.7.0",
+    "react-big-calendar": "^0.22.0",
     "react-dom": "^16.7.0",
     "react-loadable": "^5.5.0",
     "react-router-dom": "^5.0.0",

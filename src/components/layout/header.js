@@ -13,8 +13,11 @@ class Header extends Component {
     return (
       <Segment inverted attached>
         <Menu inverted attached>
-          <Menu.Item>
-            <img src="favicon.png" alt="logo" />
+          <Menu.Item
+            as={Link}
+            to={'/'}
+          >
+            <img src="\favicon.png" alt="logo" />
           </Menu.Item>
           {showMenuItems &&
           (<Fragment>
@@ -27,6 +30,11 @@ class Header extends Component {
               name='Eventos'
               as={Link}
               to={'/events'}
+            />
+            <Menu.Item
+              name='Dashboard'
+              as={Link}
+              to={'/dashboard'}
             />
           <Menu.Menu position='right'>
             <Menu.Item
