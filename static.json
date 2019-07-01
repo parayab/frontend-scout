@@ -4,6 +4,8 @@
     "/**": "index.html"
   },
   "proxies": {
-    "origin": "https://backend-scout.herokuapp.com"
+    "/api/": {
+      "origin": "${API_URL}"
+    }
   }
 } 
