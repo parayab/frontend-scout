@@ -5,6 +5,7 @@ import 'moment/locale/es';
 
 import MembersList from './membersList';
 import MembersModal from './membersModal';
+import EventChecklist from './eventChecklist';
 
 import {
   List,
@@ -132,6 +133,7 @@ class EventView extends Component {
               />
             )}
           </Segment>
+          <EventChecklist groupEventId={groupEvent.id} groupId={this.props.groupId} />
           <Segment>
             {
             <Fragment>
