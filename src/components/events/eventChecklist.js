@@ -16,6 +16,7 @@ class EventChecklist extends Component {
     this.toggleTaskForm = this.toggleTaskForm.bind(this);
     this.onTaskChange = this.onTaskChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
   componentDidMount() {
     this.fetchChecklist();
@@ -81,6 +82,21 @@ class EventChecklist extends Component {
     }
   }
 
+  async deleteTask(event, data) {
+    const { groupEventId, groupId } = this.props;
+    const task = data.task;
+    const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist/${task.id}`, {
+      method: 'DELETE'
+    });
+    if (response.ok) {
+      this.setState(prevState => {
+        const array = [...prevState.checklist];
+        const indexToDelete = array.indexOf(task);
+        array.splice(indexToDelete, 1);
+        return { checklist: array }
+      })
+    }
+  }
 
   render () {
     return (
@@ -99,6 +115,9 @@ class EventChecklist extends Component {
                   checked={task.completed}
                   readOnly={this.props.readOnly}
                 />
+                <List.Content floated='right'>
+                  <Button task={task} onClick={this.deleteTask}>x</Button>
+                </List.Content>
               </List.Item>
             );
           })}
