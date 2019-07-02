@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Segment, Header } from 'semantic-ui-react';
+import { Segment, Header, Label } from 'semantic-ui-react';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment';
@@ -62,13 +62,13 @@ class DashboardAccounting extends Component {
         type: 'column'
       },
       title: {
-        text: 'Información contable'
+        text: 'Ingresos y gastos del último año'
       },
       xAxis: {
         categories: keys
       },
       yAxis: {
-        title: {text: ""}
+        title: {text: "Pesos chilenos"}
       },
       credits: false,
       series: [
@@ -101,13 +101,24 @@ class DashboardAccounting extends Component {
 
     return(
       <Fragment>
-        <Segment loading={this.state.isFetching}>
+        <Segment loading={this.state.isFetching} style={{marginTop: 0, marginBottom: 0}}>
           <Header>Resumen Contabilidad</Header>
-          <Header as="h5">Total ingresos: { Number(income).toLocaleString("es") }</Header>
-          <Header as="h5">Total gastos: { Number(expense).toLocaleString("es") }</Header>
-          <Header as="h5">Presupuesto total: { (income - expense).toLocaleString("es") }</Header>
+          <Label.Group size='huge'>
+            <Label>
+              {Number(income).toLocaleString("es")}
+              <Label.Detail>Total Ingresos</Label.Detail>
+            </Label>
+            <Label>
+              {Number(expense).toLocaleString("es")}
+              <Label.Detail>Total Gastos</Label.Detail>
+            </Label>
+            <Label floated="right" color={income-expense > 0 ? "green" : "red"}>
+              {(income - expense).toLocaleString("es")}
+              <Label.Detail>Presupuesto</Label.Detail>
+            </Label>
+          </Label.Group>
         </Segment>
-        <Segment>
+        <Segment style={{marginTop: 0}}>
           <HighchartsReact
             highcharts={Highcharts}
             options={chartOptions}
