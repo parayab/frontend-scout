@@ -32,6 +32,11 @@ class Header extends Component {
               to={'/events'}
             />
             <Menu.Item
+              name='Contabilidad'
+              as={Link}
+              to={'/accounting'}
+            />
+            <Menu.Item
               name='Dashboard'
               as={Link}
               to={'/dashboard'}

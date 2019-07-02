@@ -26,6 +26,11 @@ const Events = Loadable({
   loading: () => <div>Loading...</div>
 });
 
+const Accounting = Loadable({
+  loader: () => import("./accounting"),
+  loading: () => <div>Loading...</div>
+});
+
 const Dashboard = Loadable({
   loader: () => import("./dashboard"),
   loading: () => <div>Loading...</div>
@@ -38,6 +43,7 @@ const Routes = () => (
       <Route exact path="/sections" component={Sections} />
       <Route exact path="/groups" component={Groups} />
       <Route exact path="/events" component={Events} />
+      <Route exact path="/accounting" component={Accounting} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/logout" component={Login} />
       <Route exact path="/dashboard" component={Dashboard} />
