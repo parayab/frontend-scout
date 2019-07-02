@@ -14,13 +14,14 @@ class DashboardAccounting extends Component {
       isFetching: false,
       accountingInfo: [],
       totalPages: 1,
-      pageSize: 3,
+      pageSize: 8,
       currentPage: 1,
       openForm: false
     };
     this.onPageChange = this.onPageChange.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.createTransaction = this.createTransaction.bind(this);
+    this.deleteTransaction = this.deleteTransaction.bind(this);
   }
   componentDidMount() {
     this.getAccountingInfo();
@@ -50,6 +51,18 @@ class DashboardAccounting extends Component {
       this.setState({ accountingInfo: resJson.transactions, totalPages: resJson.totalPages, openForm: false });
     }
     this.setState({ isFetching: false });
+  }
+
+  async deleteTransaction(event, data) {
+    const response = await fetch(`/groups/${this.props.groupId}/groupTransaction/${data.transid}`, {
+      method: 'DELETE'
+    });
+    if (response.ok) {
+      this.setState(prevstate => {
+        const newState = prevstate.accountingInfo.filter(transaction => transaction.id !== data.transid);
+        return { accountingInfo: newState }
+      });
+    }
   }
 
   onPageChange(event, data) {
@@ -92,6 +105,7 @@ class DashboardAccounting extends Component {
               <Table.HeaderCell>Monto</Table.HeaderCell>
               <Table.HeaderCell>Fecha</Table.HeaderCell>
               <Table.HeaderCell>Tipo</Table.HeaderCell>
+              <Table.HeaderCell>Acción</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -102,13 +116,16 @@ class DashboardAccounting extends Component {
                 <Table.Cell>{transaction.amount}</Table.Cell>
                 <Table.Cell>{moment(transaction.date).add(1, "day").format('LL')}</Table.Cell>
                 <Table.Cell>{transaction.income ? 'Ingreso' : 'Gasto' }</Table.Cell>
+                <Table.Cell collapsing>
+                  <Button size="tiny" icon="delete" color="red" onClick={this.deleteTransaction} transid={transaction.id}/>
+                </Table.Cell>
               </Table.Row>
               )
             })}
           </Table.Body>
           <Table.Footer>
             <Table.Row>
-              <Table.HeaderCell colSpan='4'>
+              <Table.HeaderCell colSpan='5'>
                 <Pagination
                   floated="right"
                   totalPages={this.state.totalPages}

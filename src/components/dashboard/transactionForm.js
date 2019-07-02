@@ -44,7 +44,6 @@ class TransactionForm extends Component {
     this.setState({ error: true });
   }
   render() {
-    console.log(this.state);
     const modalButtons = (
       <Modal.Actions>
         <Button negative onClick={this.props.handleCancel}>
