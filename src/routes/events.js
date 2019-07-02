@@ -20,7 +20,6 @@ class EventsView extends Component {
     this.state = {
       groupEvents: [],
       loadingGroupEvents: true,
-      groupId: 1,
       selectedGroupEvent: null,
       selectedGroupEventAssistants: [],
       loadingSelectedGroupEventAssistants: false,
