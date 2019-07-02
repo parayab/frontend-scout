@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Table, Segment } from 'semantic-ui-react';
+import { Header, Table, Segment, Pagination } from 'semantic-ui-react';
 import moment from 'moment';
 
 /* Falta hacer el request para obtener los datos, el filtro por actividad y quizás paginar porque esta sección puede
@@ -11,27 +11,29 @@ class DashboardAccounting extends Component {
     super(props);
     this.state = {
       isFetching: false,
-      accountingInfo: []
+      accountingInfo: [],
+      totalPages: 1,
+      pageSize: 2,
+      currentPage: 1,
     };
+    this.onPageChange = this.onPageChange.bind(this);
   }
   componentDidMount() {
-    this.setState({ isFetching: true });
     this.getAccountingInfo();
-    this.setState({ isFetching: false });
   }
   async getAccountingInfo() {
     // Hacer el request cuando el endpoint exista
-    const mockData = [
-      { id: 0, amount: 10000, income: false, category: 'actividad', date: "2019-01-01" },
-      { id: 1, amount: 20000, income: false, category: 'bingo', date: "2019-01-02" },
-      { id: 2, amount: 30000, income: false, category: 'carpas', date: "2019-01-03" },
-      { id: 3, amount: 100000, income: true, category: 'donación', date: "2019-01-04" },
-      { id: 4, amount: 45660, income: false, category: 'actividad', date: "2019-01-05" },
-      { id: 5, amount: 349000, income: true, category: 'bingo', date: "2019-01-06" },
-      { id: 6, amount: 2000000, income: true, category: 'buses', date: "2019-01-07" },
-      { id: 7, amount: 100000, income: true, category: 'donación', date: "2019-01-08" },
-    ];
-    this.setState({ accountingInfo: mockData });
+    this.setState({ isFetching: true});
+    const { currentPage, pageSize} = this.state;
+    const response = await fetch(`/groups/${this.props.groupId}/groupTransaction?page=${currentPage - 1}&pageSize=${pageSize}`);
+    if (response.ok) {
+      const resJson = await response.json();
+      this.setState({ accountingInfo: resJson.transactions, totalPages: resJson.totalPages });
+    }
+    this.setState({ isFetching: false });
+  }
+  onPageChange(event, data) {
+    this.setState({ currentPage: data.activePage }, this.getAccountingInfo);
   }
   render() {
     return(
@@ -58,6 +60,18 @@ class DashboardAccounting extends Component {
               )
             })}
           </Table.Body>
+          <Table.Footer>
+            <Table.Row>
+              <Table.HeaderCell colSpan='4'>
+                <Pagination
+                  floated="right"
+                  totalPages={this.state.totalPages}
+                  defaultActivePage={this.state.currentPage}
+                  onPageChange={this.onPageChange}
+                />
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
 
         </Table>
       </Segment>
