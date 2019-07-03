@@ -30,7 +30,7 @@ class EventChecklist extends Component {
   async fetchChecklist() {
     this.setState({ isFetching: true });
     const { groupEventId, groupId } = this.props;
-    const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist`);
+    const response = await fetch(`/groups/${groupId}/groupevent/${groupEventId}/checklist`);
     if (response.ok) {
       const resJson = await response.json();
       if (resJson.checklist) {
@@ -43,7 +43,7 @@ class EventChecklist extends Component {
 
   async handleToggle(taskId) {
     const { groupEventId, groupId } = this.props;
-    const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist/${taskId}/toggle`, {
+    const response = await fetch(`/groups/${groupId}/groupevent/${groupEventId}/checklist/${taskId}/toggle`, {
       method: 'PATCH'
     });
     if (response.ok) {
@@ -69,7 +69,7 @@ class EventChecklist extends Component {
     this.setState({ submittingTask: true });
     if (this.state.newTask) {
       const { groupEventId, groupId } = this.props;
-      const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist`, {
+      const response = await fetch(`/groups/${groupId}/groupevent/${groupEventId}/checklist`, {
         method: 'POST',
         body: JSON.stringify({
           name: this.state.newTask
@@ -87,7 +87,7 @@ class EventChecklist extends Component {
   async deleteTask(event, data) {
     const { groupEventId, groupId } = this.props;
     const task = data.task;
-    const response = await fetch(`groups/${groupId}/groupevent/${groupEventId}/checklist/${task.id}`, {
+    const response = await fetch(`/groups/${groupId}/groupevent/${groupEventId}/checklist/${task.id}`, {
       method: 'DELETE'
     });
     if (response.ok) {

@@ -45,7 +45,7 @@ class SectionsView extends Component {
 
   async editSection(name, typeId, sectionId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/${this.props.groupId}/sections/${sectionId}`, {
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "PATCH",
       body: JSON.stringify({ name: name, typeId: typeId })
     });
@@ -58,7 +58,7 @@ class SectionsView extends Component {
 
   async newSection(name, typeId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/${this.props.groupId}/sections`, {
+    const response = await fetch(`/groups/${this.props.groupId}/sections`, {
       method: "POST",
       body: JSON.stringify({ name: name, typeId: typeId })
     });
@@ -71,7 +71,7 @@ class SectionsView extends Component {
 
   async deleteSection(sectionId) {
     this.setState({ loading: true });
-    await fetch(`groups/${this.props.groupId}/sections/${sectionId}`, {
+    await fetch(`/groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "DELETE",
     });
     this.setState({ loading: false });

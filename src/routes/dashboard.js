@@ -35,7 +35,7 @@ class Dashboard extends Component {
     }
   }
   async getAllMembers() {
-    const response = await fetch(`groups/${this.props.groupId}/users`);
+    const response = await fetch(`/groups/${this.props.groupId}/users`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ groupMembers: resJson.users });
@@ -43,7 +43,7 @@ class Dashboard extends Component {
   }
 
   async getAllEvents() {
-    const response = await fetch(`groups/${this.props.groupId}/groupEvent`);
+    const response = await fetch(`/groups/${this.props.groupId}/groupEvent`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ groupEvents: resJson.groupEvents });
