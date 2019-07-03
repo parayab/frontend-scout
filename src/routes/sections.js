@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import SectionsComponent from "../components/sections/sections";
+import withAuth from "../components/auth/withAuth";
 
 class SectionsView extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class SectionsView extends Component {
   }
 
   async getAllSections() {
-    const response = await fetch("/groups/1/sections");
+    const response = await fetch(`/groups/${this.props.groupId}/sections`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ sections: resJson.sections });
@@ -32,7 +33,7 @@ class SectionsView extends Component {
   }
 
   async getSectionTypes() {
-    const response = await fetch("/groups/1/sections/sectionTypes");
+    const response = await fetch(`/groups/${this.props.groupId}/sections/sectionTypes`);
     if (response.ok) {
       const resJson = await response.json();
       const validSectionTypes = resJson.sectionTypes.map(section => {
@@ -44,11 +45,8 @@ class SectionsView extends Component {
 
   async editSection(name, typeId, sectionId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/1/sections/${sectionId}`, {
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({ name: name, typeId: typeId })
     });
     if (response.ok) {
@@ -60,11 +58,8 @@ class SectionsView extends Component {
 
   async newSection(name, typeId) {
     this.setState({ loading: true });
-    const response = await fetch(`groups/1/sections`, {
+    const response = await fetch(`/groups/${this.props.groupId}/sections`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({ name: name, typeId: typeId })
     });
     if (response.ok) {
@@ -76,11 +71,8 @@ class SectionsView extends Component {
 
   async deleteSection(sectionId) {
     this.setState({ loading: true });
-    await fetch(`groups/1/sections/${sectionId}`, {
+    await fetch(`/groups/${this.props.groupId}/sections/${sectionId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
     });
     this.setState({ loading: false });
     this.getAllSections();
@@ -98,10 +90,11 @@ class SectionsView extends Component {
           saveChanges={this.editSection}
           newSection={this.newSection}
           deleteSection={this.deleteSection}
+          groupId={this.props.groupId}
         />
       </Fragment>
     );
   }
 }
 
-export default SectionsView;
+export default withAuth(SectionsView);

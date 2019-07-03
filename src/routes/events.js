@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from 'prop-types';
+
 import {
   Header,
   SidebarPushable,
@@ -10,6 +12,7 @@ import {
 
 import EventView from "../components/events/eventView";
 import EventForm from "../components/events/eventForm";
+import withAuth from "../components/auth/withAuth";
 
 class EventsView extends Component {
   constructor(props) {
@@ -17,7 +20,6 @@ class EventsView extends Component {
     this.state = {
       groupEvents: [],
       loadingGroupEvents: true,
-      groupId: 1,
       selectedGroupEvent: null,
       selectedGroupEventAssistants: [],
       loadingSelectedGroupEventAssistants: false,
@@ -33,7 +35,7 @@ class EventsView extends Component {
   }
 
   async getAllGroupEvents() {
-    const response = await fetch("/groups/1/groupevent");
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent`);
     if (response.ok) {
       const jsonResponse = await response.json();
       this.setState({
@@ -45,9 +47,9 @@ class EventsView extends Component {
 
   handleGroupEventSelection(event, data) {
     // groupEvent is always going to be an object
-    const { groupEvent } = data;
+    const { groupevent } = data;
     this.setState({
-      selectedGroupEvent: groupEvent,
+      selectedGroupEvent: groupevent,
       creatingGroupEvent: false,
       loadingSelectedGroupEventAssistants: true
     });
@@ -72,11 +74,8 @@ class EventsView extends Component {
     groupEventId
   ) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent/${groupEventId}`, {
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({
         name: name,
         location: location,
@@ -95,11 +94,8 @@ class EventsView extends Component {
 
   async createGroupEvent(name, location, foundationDate, description, price) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/1/groupevent`, {
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({
         name: name,
         location: location,
@@ -121,11 +117,8 @@ class EventsView extends Component {
 
   async deleteGroupEvent(groupEventId) {
     this.setState({ loadingGroupEvents: true });
-    await fetch(`groups/1/groupevent/${groupEventId}`, {
+    await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
     });
     this.setState({ loadingGroupEvents: false });
     this.getAllGroupEvents();
@@ -162,7 +155,7 @@ class EventsView extends Component {
             {groupEvents.map(event => (
               <Menu.Item
                 key={event.id}
-                groupEvent={event}
+                groupevent={event}
                 onClick={this.handleGroupEventSelection}
               >
                 <Icon name="calendar outline" />
@@ -187,6 +180,7 @@ class EventsView extends Component {
                 loadingAssistants={loadingSelectedGroupEventAssistants}
                 saveChanges={this.editGroupEvent}
                 deleteGroupEvent={this.deleteGroupEvent}
+                groupId={this.props.groupId}
               />
             )}
             {creatingGroupEvent && (
@@ -194,10 +188,11 @@ class EventsView extends Component {
                 <Header as="h3">Nuevo evento de grupo</Header>
                 <EventForm
                   groupEvent={{
-                    name: null,
-                    location: null,
-                    foundationDate: null,
-                    description: null
+                    name: '',
+                    location: '',
+                    foundationDate: '',
+                    description: '',
+                    price: '',
                   }}
                   saveChanges={this.createGroupEvent}
                   cancelEdition={this.cancelCreateGroupEvent}
@@ -211,4 +206,8 @@ class EventsView extends Component {
   }
 }
 
-export default EventsView;
+EventsView.propTypes = {
+  groupId: PropTypes.string.isRequired,
+};
+
+export default withAuth(EventsView);

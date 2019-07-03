@@ -20,12 +20,23 @@ class SectionsComponent extends Component {
     this.newSection = this.newSection.bind(this);
     this.cancelCreateSection = this.cancelCreateSection.bind(this);
     this.getMembers = this.getMembers.bind(this);
+    this.deleteMember = this.deleteMember.bind(this);
   }
   async getMembers(section) {
-    const response = await fetch(`/groups/1/sections/${section.id}/users`);
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${section.id}/users`);
     if (response.ok) {
       const resJson = await response.json();
       this.setState({ selectedSectionMembers: resJson.users });
+    }
+  }
+  async deleteMember(sectionId, memberId) {
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${sectionId}/users/${memberId}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      const resJson = await response.json();
+      this.setState({ selectedSectionMembers: resJson.sectionUsers });
+      alert('Usuario eliminado con éxito!');
     }
   }
   async handleSelectedSection(event, data) {
@@ -52,7 +63,7 @@ class SectionsComponent extends Component {
   }
   
   render() {
-    if(!this.props.sections.length === 0) {return <div>Loading...</div>}
+    if(!this.props.sections || !this.props.sections.length === 0) {return <div>Loading...</div>}
     return(
       <Fragment>
         <Sidebar.Pushable>
@@ -106,6 +117,8 @@ class SectionsComponent extends Component {
               members={this.state.selectedSectionMembers}
               loadingMembers={this.state.loadingSectionMembers}
               getMembers={this.getMembers}
+              deleteMember={this.deleteMember}
+              groupId={this.props.groupId}
             />
             }
             {this.state.newSection
@@ -136,6 +149,7 @@ SectionsComponent.propTypes = {
   saveChanges: PropTypes.func.isRequired,
   newSection: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 
 export default SectionsComponent;

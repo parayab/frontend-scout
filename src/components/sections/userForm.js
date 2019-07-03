@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import MOCK_DATA from './MOCK_DATA';
@@ -22,6 +23,7 @@ class UserForm extends Component {
       error: false,
       emailError: false,
       loading: false,
+      requestMethod: '',
     }
     this.handleOnClose = this.handleOnClose.bind(this);
     this.handleBackToForm = this.handleBackToForm.bind(this);
@@ -37,6 +39,15 @@ class UserForm extends Component {
     this.handleRoleChange = this.handleRoleChange.bind(this);
     this.formValidation = this.formValidation.bind(this);
     this.resetState = this.resetState.bind(this);
+  }
+  componentDidMount() {
+    if (this.props.selectedMember !== undefined) {
+      this.setState({...this.props.selectedMember});
+      this.setState({
+        birthdate: this.props.selectedMember.birthdate.split('T')[0],
+        requestMethod: 'PATCH',
+      });
+    } else this.setState({ requestMethod: 'POST' });
   }
   resetState() {
     this.setState({
@@ -81,14 +92,13 @@ class UserForm extends Component {
       email,
       birthdate,
       address,
-      roleId
+      roleId,
+      requestMethod
     } = this.state;
+    const userId = this.props.selectedMember ? this.props.selectedMember.id : '';
     this.setState({loading: true});
-    const response = await fetch(`groups/1/sections/${this.props.section.id}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${this.props.section.id}/users/${userId}`, {
+      method: requestMethod,
       body: JSON.stringify({
         name1,
         name2,
@@ -102,13 +112,15 @@ class UserForm extends Component {
     });
     this.setState({ loading: false });
     if (response.ok) {
-      alert('Usuario creado con éxito!');
+      const alertMessage = this.props.selectedMember ? 'Cambios guardados con éxito' : 'Usuario creado con éxito';
+      alert(alertMessage);
       this.props.getMembers(this.props.section);
       this.resetState();
       this.props.handleCancel();
       return;
     }
-    alert('Hubo un error creando al usuario. Intenta nuevamente');
+    const failureMessage = !this.props.selectedMember ? 'Hubo un error guardando los cambios' : 'Hubo un error creando al usuario.';
+    alert(failureMessage + ' Intenta nuevamente');
   }
   handleFirstNameChange(event, data) {
     this.setState({ name1: data.value });
@@ -298,6 +310,8 @@ UserForm.propTypes = {
   handleCancel: PropTypes.func.isRequired,
   getMembers: PropTypes.func.isRequired,
   section: PropTypes.object.isRequired,
+  selectedMember: PropTypes.object,
+  groupId: PropTypes.string.isRequired,
 }
 
 export default UserForm;
