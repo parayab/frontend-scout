@@ -74,7 +74,7 @@ class Login extends Component {
 
     async handleLogin(e){
       const { email, password } = this.state
-      const response = await fetch('session/login', {
+      const response = await fetch('/session/login', {
           method: "PUT",
           body: JSON.stringify({
             email,

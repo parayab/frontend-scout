@@ -30,7 +30,7 @@ class SectionsComponent extends Component {
     }
   }
   async deleteMember(sectionId, memberId) {
-    const response = await fetch(`groups/${this.props.groupId}/sections/${sectionId}/users/${memberId}`, {
+    const response = await fetch(`/groups/${this.props.groupId}/sections/${sectionId}/users/${memberId}`, {
       method: "DELETE",
     });
     if (response.ok) {

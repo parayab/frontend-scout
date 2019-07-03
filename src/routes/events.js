@@ -74,7 +74,7 @@ class EventsView extends Component {
     groupEventId
   ) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "PATCH",
       body: JSON.stringify({
         name: name,
@@ -94,7 +94,7 @@ class EventsView extends Component {
 
   async createGroupEvent(name, location, foundationDate, description, price) {
     this.setState({ loadingGroupEvents: true });
-    const response = await fetch(`groups/${this.props.groupId}/groupevent`, {
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent`, {
       method: "POST",
       body: JSON.stringify({
         name: name,
@@ -117,7 +117,7 @@ class EventsView extends Component {
 
   async deleteGroupEvent(groupEventId) {
     this.setState({ loadingGroupEvents: true });
-    await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}`, {
+    await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}`, {
       method: "DELETE",
     });
     this.setState({ loadingGroupEvents: false });

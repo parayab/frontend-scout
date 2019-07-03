@@ -7,8 +7,7 @@ export const interceptor = fetchIntercept.register({
     config = config === undefined ? { headers: {} } : {...config, headers: {}}
     config.headers.token=localStorage.getItem("id_token"); // como sea que se deba enviar el header
     config.headers['Content-Type'] = 'application/json';
-    const newUrl = `${process.env.REACT_APP_API_URL}/${url}`;
-    console.log(process.env, newUrl);
+    const newUrl = process.env.REACT_APP_API_URL + url;
     return [newUrl, config];
   },
 

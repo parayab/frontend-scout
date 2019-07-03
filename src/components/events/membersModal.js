@@ -17,7 +17,7 @@ class MembersModal extends Component {
   }
   async componentDidMount() {
     this.setState({isFetchingNonAssistants: true});
-    const response = await fetch(`groups/${this.props.groupId}/users`);
+    const response = await fetch(`/groups/${this.props.groupId}/users`);
     if (response.ok) {
       const resJson = await response.json();
       const usersInfo = resJson.users.map(user => {

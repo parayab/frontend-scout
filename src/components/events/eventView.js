@@ -71,7 +71,7 @@ class EventView extends Component {
   async getAllParticipants() {
     this.setState({ isFetchingParticipants: true });
     const groupEventId = this.props.groupEvent.id;
-    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}/getusers`);
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}/getusers`);
     if (response.ok) {
       const resJson = await response.json();
       if (resJson.users) {
@@ -84,7 +84,7 @@ class EventView extends Component {
 
   async removeParticipant(participant) {
     const groupEventId = this.props.groupEvent.id;
-    const response = await fetch(`groups/${this.props.groupId}/groupevent/${groupEventId}/deleteUser/${participant.id}`,{
+    const response = await fetch(`/groups/${this.props.groupId}/groupevent/${groupEventId}/deleteUser/${participant.id}`,{
       method: 'DELETE'
     });
     if (response.ok){
